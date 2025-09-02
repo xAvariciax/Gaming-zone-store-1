@@ -1,0 +1,33 @@
+---
+import Layout from "../../layouts/Layout.astro"
+import { Image } from "astro:assets";
+import xboxbg from "../../assets/multimedia/nintendo/bg.jpg";
+---
+
+<!-- Contenido específico para la página de nintendo -->
+<Layout>
+	
+	<main class="nintendo">
+		<div>		
+			<ul class="bg-white border-3 border-black">
+				<li>
+
+				</li>
+			</ul>
+	
+		</div>
+	</main>
+	
+</Layout>
+
+<style>
+	html,
+.nintendo {
+	background-image: url('../../assets/multimedia/nintendo/bg.jpg');
+	background-size: cover; /* para que la imagen cubra todo el fondo */
+	background-position: center center; /*para centrar la imagen */
+	background-repeat: no-repeat; 
+	height: 100vh; /* altura completa de la ventana */
+	margin: 0;
+}
+</style>

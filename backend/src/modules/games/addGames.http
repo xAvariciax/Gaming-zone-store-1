@@ -1,0 +1,6 @@
+POST  http://localhost:3000/consoles/playstation
+Content-Type: application/json
+{
+  "name": "Elden Ring",
+  "quanty": "3"
+}
