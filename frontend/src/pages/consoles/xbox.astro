@@ -19,7 +19,83 @@ import xboxbg from "../../assets/multimedia/xbox/bg.jpg";
 	</main>
 	
 </Layout>
+<script>
+	const API_URL = 'https://mi-servidor.com/api/';
 
+const itemForm = document.getElementById('itemForm');
+const itemList = document.getElementById('itemList');
+
+itemForm.addEventListener('submit', async function(event) {
+    // Evita la recarga de la página
+    event.preventDefault();
+
+    // Obtiene los valores de los campos del formulario
+    const itemName = document.getElementById('itemName').value;
+    const itemDescription = document.getElementById('itemDescription').value;
+    const itemQuantity = document.getElementById('itemQuantity').value;
+    const itemImage = document.getElementById('itemImage').value;
+
+    // Validación básica para evitar envíos vacíos
+    if (!itemName || !itemDescription || !itemQuantity || !itemImage) {
+        alert('Por favor, completa todos los campos.');
+        return;
+    }
+
+    // Objeto con los datos que se enviarán al backend
+    const nuevoJuego = {
+        nombre: itemName,
+        descripcion: itemDescription,
+        cantidad: parseInt(itemQuantity),
+        urlImagen: itemImage,
+    };
+
+    // Realiza la petición POST al servidor
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(nuevoJuego),
+        });
+
+        // Si la respuesta es exitosa
+        if (response.ok) {
+            const data = await response.json();
+            alert('¡Juego agregado con éxito!');
+            console.log('Juego agregado:', data);
+
+            // Crea un nuevo juego en el frontend, usando los datos del servidor (si los devuelve)
+            const newItem = document.createElement('li');
+            newItem.className = 'item-card';
+
+            newItem.innerHTML = `
+                <img src="${data.urlImagen}" alt="${data.nombre}">
+                <div class="item-info">
+                    <h3>${data.nombre}</h3>
+                    <p><strong>Descripción:</strong> ${data.descripcion}</p>
+                    <p><strong>Cantidad:</strong> ${data.cantidad}</p>
+                </div>
+            `;
+
+            // Añade el nuevo juego a la lista
+            itemList.appendChild(newItem);
+
+            // Limpia el formulario
+            itemForm.reset();
+        } else {
+            // Si hay un error, maneja la respuesta del servidor
+            const errorData = await response.json();
+            alert(`Error al agregar el juego: ${errorData.message}`);
+            console.error('Error:', errorData);
+        }
+    } catch (error) {
+        // Maneja errores de conexión (servidor caído, etc.)
+        console.error('Error de red:', error);
+        alert('Error de conexión. Por favor, inténtalo de nuevo más tarde.');
+    }
+});
+</script>
 <style>
 	html,
 .Xbox {
