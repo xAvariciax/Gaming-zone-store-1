@@ -7,18 +7,22 @@ import {
 } from './games.routes.schemas.js';
 const gamesRouter = express.Router();
 
-gamesRouter.get('/consoles', async (req, res) => {
+gamesRouter.get('/', async (req, res) => {
   const games = await gamesRepository.getAll();
   res.json(games);
 });
 
-gamesRouter.post('/consoles', async (req, res) => {
+gamesRouter.post('/', async (req, res) => {
+  console.log(1);
+
   const body = creategamesRouteSchema.body.parse(req.body);
+  console.log(2);
   const newgames = await gamesRepository.addOne(body);
+  console.log(3);
   res.json(newgames);
 });
 
-gamesRouter.delete('/consoles/', async (req, res) => {
+gamesRouter.delete('/', async (req, res) => {
   const params = deletegamesRouteSchema.params.parse(req.params);
   console.log('PARAMS', params);
   const gamesDeleted = await gamesRepository.deleteOneById(params.id);
@@ -27,7 +31,7 @@ gamesRouter.delete('/consoles/', async (req, res) => {
   res.json(gamesDeleted);
 });
 
-gamesRouter.put('/consoles/p', async (req, res) => {
+gamesRouter.put('/', async (req, res) => {
   const body = updategamesRouteSchema.body.parse(req.body);
   const params = updategamesRouteSchema.params.parse(req.params);
   const gamesUpdated = await gamesRepository.updateOneById(params.id, body);

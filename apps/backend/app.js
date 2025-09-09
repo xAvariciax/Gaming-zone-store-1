@@ -7,18 +7,19 @@ import cors from 'cors';
 import usersRouter from './src/modules/users/users.routes.js';
 import jwt from 'jsonwebtoken';
 import loginRouter from './src/modules/login/login.routes.js';
+import path from 'path';
+import {handler as ssrHandler} from './dist/server/entry.mjs'
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.json({ hola: 'mundo' });
-});
-
 app.use('/api/games', gamesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
+app.use('/', express.static(path.join(import.meta.dirname, 'dist', 'client')))
+app.use(ssrHandler);
 
 app.use((err, req, res, _next) => {
   console.log(err);

@@ -1,9 +1,12 @@
 /** 
  * @typedef Games
  * @type {object}
- * @property {string} id El id del Gameo
- * @property {string} name El nombre del Gameo
- * @property {string} phone El numero del Gameo
+ * @property {string} id El id del juego
+ * @property {string} name El nombre del juego
+ * @property {string} quanty El numero del juego
+ * @property {string} description la descripcion del juego
+ * @property {string} url la imagen del juego
+ * 
  */
 
 /** 
@@ -158,7 +161,7 @@ const updateGame = (updatedGame) => {
 
   
 export {
-  addGame,
+  addGames,
   renderGames,
   saveGamesInBrowser,
   getGamesFromBrowser,

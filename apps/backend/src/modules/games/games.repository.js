@@ -9,10 +9,10 @@ const getAll = async () => {
 const addOne = async (payload) => {
   const response = await db.query(
     `
-    INSERT INTO games (name, quanty)
-    VALUES ($1, $2) RETURNING *
+    INSERT INTO games (name, description, quanty)
+    VALUES ($1, $2, $3) RETURNING *
   `,
-    [payload.name, payload.quanty],
+    [payload.name, payload.quanty, payload.description],
   );
   return response.rows[0];
 };

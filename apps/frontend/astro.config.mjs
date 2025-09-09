@@ -8,5 +8,7 @@ import node from '@astrojs/node';
 export default defineConfig({
   vite: {plugins: [tailwindcss()]},
   integrations: [icon()],
-  adapter: node({mode: 'middleware'})
+  adapter: node({
+    mode: 'middleware'
+  })
 });

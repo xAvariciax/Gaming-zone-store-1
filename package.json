@@ -1,5 +1,25 @@
 {
-  "dependencies": {
-    "ky": "^1.8.2"
-  }
+  "name": "gaming-zone-store",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client:dev": "npm run dev --workspace=client",
+    "server:dev": "npm run dev --workspace=server",
+    "server:tables:create": "npm run tables:create -- workspace=server",
+    "build": "rm -rf apps/backend/dist && npm run build --workspace=client && cp -r apps/frontend/dist apps/backend/dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xAvariciax/Gaming-Zone-Store-1.git"
+  },
+  "workspaces":["apps/*"],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/xAvariciax/Gaming-Zone-Store-1/issues"
+  },
+  "homepage": "https://github.com/xAvariciax/Gaming-Zone-Store-1#readme"
 }
