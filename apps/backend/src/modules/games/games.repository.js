@@ -9,10 +9,10 @@ const getAll = async () => {
 const addOne = async (payload) => {
   const response = await db.query(
     `
-    INSERT INTO games (name, description, quanty)
-    VALUES ($1, $2, $3) RETURNING *
+    INSERT INTO games (name, description, quantity, url)
+    VALUES ($1, $2, $3, $4) RETURNING *
   `,
-    [payload.name, payload.quanty, payload.description],
+    [payload.name, payload.description, payload.quantity, payload.url],
   );
   return response.rows[0];
 };
@@ -35,11 +35,11 @@ const updateOneById = async (id, payload) => {
   const response = await db.query(
     `
     UPDATE games
-    SET name = $1, quanty = $2
+    SET name = $1, quantity = $2
     WHERE id = $3
     RETURNING *
   `,
-    [payload.name, payload.quanty, id],
+    [payload.name, payload.quantity, id],
   );
   if (response.rowCount === 0) {
     throw new ErrorWithStatus(404, 'El Juego fue no encontrado');

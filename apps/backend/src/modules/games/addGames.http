@@ -2,6 +2,7 @@ POST  http://localhost:3000/api/games
 Content-Type: application/json
 {
   "name": "Elden Ring",
-  "quanty": "3",
-  "description": "An action RPG developed by FromSoftware."
+  "description": "An action RPG developed by FromSoftware.",
+  "quantity": 2,
+  "url": "https://example.com/eldenring.jpg"
 }

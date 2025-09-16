@@ -1,1 +1,6 @@
-DELETE  http://localhost:3000/consoles/playstation
+DELETE  http://localhost:3000/api/games
+Content-Type: application/json
+
+{
+  "id": "1"
+}

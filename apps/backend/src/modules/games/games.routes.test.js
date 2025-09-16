@@ -16,7 +16,7 @@ const mocks = vi.hoisted(() => {
 
 vi.mock('./games.repository.js', () => ({ default: mocks.gamesRepository }));
 
-const games = [{ id: 123, name: 'Elden ring', quanty: '3' }];
+const games = [{ id: 123, name: 'Elden ring', quantity: '3' }];
 
 describe('Cuando se intenta obtener los juegos', () => {
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe('Cuando se intenta agregar un juego', () => {
   });
 
   it('debe devolver el juego agregado cuando la validacio es correcta', async () => {
-    const newgamestructure = { name: 'Elden ring', quanty: '3' };
+    const newgamestructure = { name: 'Elden ring', quantity: '3' };
     const expectedgamestructure = { ...newgamestructure, id: 678 };
     mocks.gamesRepository.addOne.mockResolvedValue(expectedgamestructure);
     const response = await request(app).post('/games').send(newgamestructure);
@@ -48,7 +48,7 @@ describe('Cuando se intenta agregar un juego', () => {
     expect(response.body).toStrictEqual(expectedgamestructure);
   });
   it('debe devolver un error describiendo las causas de porque la validacion fallo', async () => {
-    const newgamestructure = { name: 'Elden ring', quanty: '3' };
+    const newgamestructure = { name: 'Elden ring', quantity: '3' };
     const response = await request(app).post('/games').send(newgamestructure);
     expect(response.statusCode).toBe(400);
     expect(response.body).toStrictEqual({ error: 'El nombre no es valido.' });
@@ -106,7 +106,7 @@ describe('Cuando se intenta actualizar un juego', () => {
     expect(response.body).toStrictEqual({ error: 'El id tiene que ser un numero' });
   });
   it('debe devolver un error el juego no fue encontrado', async () => {
-    const newgamestructure = { name: 'Alejandro Perez', quanty: '3' };
+    const newgamestructure = { name: 'elden ring', quanty: '3' };
     mocks.gamesRepository.updateOneById.mockRejectedValue(
       new ErrorWithStatus(404, 'El juego fue no encontrado'),
     );
@@ -115,7 +115,7 @@ describe('Cuando se intenta actualizar un juego', () => {
     expect(response.body).toStrictEqual({ error: 'El juego fue no encontrado' });
   });
   it('debe devolver un error describiendo las causas de porque la validacion fallo', async () => {
-    const newgamestructure = { name: 'Alejandro', quanty: '3' };
+    const newgamestructure = { name: 'elden ring', quantity: '3' };
     const response = await request(app).put('/games/123').send(newgamestructure);
     expect(response.statusCode).toBe(400);
     expect(response.body).toStrictEqual({ error: 'El nombre no es valido.' });

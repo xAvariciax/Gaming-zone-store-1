@@ -1,12 +1,14 @@
 import { z } from 'zod/v4';
 
-const NAME_REGEX = /^[A-Z][a-z]*[ ][A-Z][a-z]{3,}[ ]{0,1}$/;
-const QUANTITY_REGEX = /^[1-9][0-9]{0,2}$/;
+// const NAME_REGEX = /^[A-Z][a-z]*[ ][A-Z][a-z]{3,}[ ]{0,1}$/;
+// const QUANTITY_REGEX = /^[1-9][0-9]{0,2}$/;
 
 export const gamesSchema = z.object({
   id: z.number(),
   name: z.string(),
-  quanty: z.string(),
+  quantity: z.number(),
+  description: z.string(),
+  url: z.string(),
 });
 
 // export const gamesSchema = z.object({

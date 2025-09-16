@@ -6,6 +6,7 @@
   "scripts": {
     "client:dev": "npm run dev --workspace=client",
     "server:dev": "npm run dev --workspace=server",
+    "start": "NODE_ENV=production node index.js --workspace=server",
     "server:tables:create": "npm run tables:create -- workspace=server",
     "build": "rm -rf apps/backend/dist && npm run build --workspace=client && cp -r apps/frontend/dist apps/backend/dist"
   },
