@@ -44,26 +44,9 @@
     </main>
   </Layout>
   <script>
-    //agregar juegos
-    let games = [];
-    
-    const addgame = (newGame) => {
-    games = games.concat(games);
-    }
-    //guardar de forma local hasta que consiga como conectar con el backend
-    const saveGamesInLocalStorage = (games) => {
-      localStorage.setItem('games', JSON.stringify(games));
-    }
-    //cargar los juegos guardados en el local storage
-    const loadGamesFromLocalStorage = () => {
-      // obtener los juegos guardados en el local storage
-      const savedGames = localStorage.getItem('games');
-      //transformar los juegos guardados de json a javascript
-      const GamesLocal = JSON.parse(savedGames);
-      //guardar los juegos
-      games = GamesLocal ?? [];
-      
-    }
+import { BACK_ENDPOINT } from "../../config/endpoints";
+
+
     
   const itemForm = document.getElementById('itemForm');
   const itemList = document.getElementById('itemList');
@@ -97,6 +80,44 @@
   // Limpia el formulario
   itemForm.reset();
   });
+
+  //backend
+
+  const gamesData ={
+    name:"elden ring",
+    description:"un juego de rol de accion",
+    quantity:5,
+    url:"https://example.com/eldenring.jpg"
+  }
+
+const apiURL = BACK_ENDPOINT + '/games'; 
+
+async function enviarDatos(datosJuego) {
+  try {
+    const respuesta = await fetch(apiURL, {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(datosJuego)
+    });
+
+    if (!respuesta.ok) {
+      throw new Error(`Error en la solicitud: ${respuesta.status}`);
+    }
+
+    const resultado = await respuesta.json();
+    console.log('Juego agregado con éxito:', resultado);
+    alert('¡Juego agregado con éxito!');
+    itemForm.reset();
+  } catch (error) {
+    console.error('Hubo un problema con la operación:', error);
+    alert('Error al agregar el juego. Revisa la consola para más detalles.');
+  }
+}
+export { enviarDatos };
+export { gamesData };
+  // Llama a la función para enviar los datos del juego al backend
   </script>
   <style>
     html,

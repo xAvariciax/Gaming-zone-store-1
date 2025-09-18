@@ -50,6 +50,8 @@ import Notification from "../features/notifications/Notification.astro";
 <script>
   // @ts-nocheck
   import { BACK_ENDPOINT } from "../config/endpoints";
+  import AuthModule from "../features/notifications/Notification.astro";
+  import { createNotification } from "../features/notifications/notificiation";
   import ky from 'ky';
 
   // DOM Element Selection
@@ -66,9 +68,8 @@ import Notification from "../features/notifications/Notification.astro";
           email: emailInput.value,
           password: passwordInput.value
         }
-      });
-      // Si es exitoso, redirige a el apartado de consolas
-      window.location.replace('/consoles');
+      })
+      location.assign('/consoles');
     } catch (error) {
       const errorData = await error?.response?.json();
       createNotification({
@@ -78,26 +79,4 @@ import Notification from "../features/notifications/Notification.astro";
       });
     }
   });
-
-  // Notification Creation
-  function createNotification({ title, description, type }) {
-  const container = document.getElementById('notification-container');
-
-  const notification = document.createElement('div');
-  notification.className = `notification ${type}`;
-
-  notification.innerHTML = `
-    <strong>${title}</strong>
-    <p>${description}</p>
-    <button class="close-btn">&times;</button>
-  `;
-
-  // Añadir evento para cerrar la notificación
-  notification.querySelector('.close-btn').addEventListener('click', () => {
-    notification.remove();
-  });
-
-  container.appendChild(notification);
-}
-
 </script>

@@ -40,6 +40,17 @@ const findByEmail = async (payload) => {
   return response.rows[0];
 };
 
-const usersRepository = { addOne, verifyOne, findByEmail };
+const findById = async (id) => {
+  const response = await db.query(
+    `
+    SELECT id, email, verify_email, is_admin FROM users
+    WHERE id = $1
+  `,
+    [id],
+  );
+  return response.rows[0];
+};
+
+const usersRepository = { addOne, verifyOne, findByEmail, findById };
 
 export default usersRepository;
