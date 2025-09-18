@@ -1,7 +1,6 @@
 {
   "name": "gaming-zone-store",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "client:dev": "npm run dev --workspace=client",
@@ -14,7 +13,9 @@
     "type": "git",
     "url": "git+https://github.com/xAvariciax/Gaming-Zone-Store-1.git"
   },
-  "workspaces":["apps/*"],
+  "workspaces": [
+    "apps/*"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -22,5 +23,6 @@
   "bugs": {
     "url": "https://github.com/xAvariciax/Gaming-Zone-Store-1/issues"
   },
-  "homepage": "https://github.com/xAvariciax/Gaming-Zone-Store-1#readme"
+  "homepage": "https://github.com/xAvariciax/Gaming-Zone-Store-1#readme",
+  "description": ""
 }
