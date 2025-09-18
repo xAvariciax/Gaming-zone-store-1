@@ -24,7 +24,7 @@ import logoPng from '../assets/logo.png'
         <a class="hidden md:block text-white no-underline hover:underline" href="/consoles">Consoles</a>
         <a class="hidden md:block text-white no-underline hover:underline" href="/login">login</a>
         <a class="hidden md:block text-white no-underline hover:underline" href="/signup">Registro</a>
-        <button type="submit" class="cursor-pointer">
+        <a class="cursor-pointer" href="/cart">
   <svg
   xmlns="http://www.w3.org/2000/svg" id="cart-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
   <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
@@ -32,79 +32,6 @@ import logoPng from '../assets/logo.png'
   <path d="M17 17h-11v-14h-2" />
   <path d="M6 5l14 1l-1 7h-13" />
   </svg>
-  </button>
-  <!-- carrito de compra -->
-  <!-- <section id="cart" class="flex-col">
-    <table>
-      <thead>
-        <tr> -->
-          <!-- parte superior o titulo del carrito -->
-          <!-- <th class="table-title">imagen</th>
-          <th class="table-title">nombre</th>
-          <th class="table-title">precio</th>
-          <th class="table-title">cantidad</th>
-        </tr>
-      </thead>
-      <tbody id="cart-items"> -->
-        <!-- Los items se agregarán aquí  -->
-         <!-- <tr>
-          <td colspan="4" class="text-center">imagen</td>
-          <td colspan="4" class="text-center">programacion</td>
-          <td colspan="4" class="text-center">15$</td>
-          <td colspan="4" class="text-center">3</td>
-        </tr>
-      </tbody>
-    </table>
-    <button id="cart-clear" class="cursor-pointer">VACIAR CARRITO</button>
-  </section>
-      </div> -->
-    <!-- </div> -->
-</nav>
-
+  </a>
 <style>
-  #cart {
-  position: absolute;
-  top: 4rem;
-  right: 0;
-  background-color: rgb(113, 195, 243);
-  height: 25rem;
-  width: 20rem;
-  display: flex;
-  flex-direction: column;      /* Coloca todo en columna */
-  align-items: center;         /* Centra horizontalmente */
-  justify-content: center;     /* Centra verticalmente */
-  gap: 1rem;                   /* Espacio entre elementos */
-  padding: 1rem;
-  box-sizing: border-box;
-}
-
-table {
-  table-layout: fixed;
-  border-collapse: collapse;
-  width: 100%;                 /* Que la tabla ocupe todo el ancho */
-  text-align: center;
-}
-
-th.table-title {
-  padding: 0.5rem;
-  background-color: #367bf5;
-  color: white;
-}
-
-td.text-center {
-  padding: 0.5rem;
-}
-
-#cart-clear {
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  background-color: #f44336;
-  border: none;
-  color: white;
-  border-radius: 4px;
-  font-weight: bold;
-  width: 150px;
-  text-align: center;
-}
-
 </style>
