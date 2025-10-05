@@ -1,0 +1,47 @@
+---
+const { name, price, id } = Astro.props;
+---
+
+<li class="flex flex-col gap-2 p-4 border rounded-md shadow-sm">
+  <h3 class="text-xl font-semibold text-gray-800">{name}</h3>
+  <p class="text-lg text-gray-600">${price}</p>
+  <div class="flex items-center gap-2 mt-auto">
+    <button
+      class="add-to-cart-btn w-full py-2 px-4 text-sm font-medium text-white bg-lime-600 rounded-lg hover:bg-lime-700"
+      data-product-id={id}
+      data-product-name={name}
+      data-product-price={price}
+    >
+      Añadir al carrito
+    </button>
+  </div>
+</li>
+
+<script>
+  // @ts-nocheck
+  import cartService from "../../features/cart/components/cart.module.js";
+  import { createNotification } from "../../features/notifications/notification.js";
+  const addButtons = document.querySelectorAll(".add-to-cart-btn");
+
+  addButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const productId = Number(button.dataset.productId);
+      const productName = button.dataset.productName;
+      const productPrice = Number(button.dataset.productPrice);
+
+      if (!isNaN(productId)) {
+        cartService.addProductToLocalStorage({
+          productId: productId,
+          name: productName,
+          price: productPrice,
+        });
+
+        createNotification({
+          title: "Juego añadido",
+          description: "El Juego se ha agregado a tu compra.",
+          type: "success",
+        });
+      }
+    });
+  });
+</script>

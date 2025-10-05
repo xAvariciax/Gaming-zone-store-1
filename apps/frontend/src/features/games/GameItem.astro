@@ -1,5 +1,5 @@
 ---
-const { name, quanty, id, description, url } = Astro.props;
+const { name, quanty, id, description, url, price } = Astro.props;
 import { Icon } from 'astro-icon/components';
 ---
 
@@ -9,6 +9,7 @@ import { Icon } from 'astro-icon/components';
     <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={quanty} readonly>
     <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={description} readonly>
     <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="url" value={url} readonly>
+    <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="url" value={price} readonly>
   </div>
   <div class="flex gap-2 items-center">
     <button class="edit-btn w-8 h-8 flex justify-center items-center text-gray-600 hover:text-indigo-700">

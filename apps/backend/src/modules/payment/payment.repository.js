@@ -1,7 +1,6 @@
 import db from '../../db/index.js';
 import { ErrorWithStatus } from '../../utils/errorTypes.js';
 
-
 const addPayment = async (payload) => {
   let cuotaId = payload.cuota_id;
   if (!cuotaId) {

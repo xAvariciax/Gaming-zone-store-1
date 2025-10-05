@@ -214,5 +214,5 @@ export default {
   updateGame,
   editIcon,
   editingIcon,
-  gamesModule
+  gamesModule,
 }

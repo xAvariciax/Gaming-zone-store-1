@@ -60,17 +60,54 @@ import Notification from "../features/notifications/Notification.astro";
   const passwordInput = document.querySelector('#password');
 
   // Form Submission
+  // form.addEventListener('submit', async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     await ky.post(`${BACK_ENDPOINT}/api/login`,{
+  //       json: { 
+  //         email: emailInput.value,
+  //         password: passwordInput.value
+  //       }
+  //     })
+  //     location.assign('/consoles');
+  //   } catch (error) {
+  //     const errorData = await error?.response?.json();
+  //     createNotification({
+  //       title: 'Ups! Hubo un error',
+  //       description: errorData?.error ?? 'No se pudo iniciar sesion',
+  //       type: 'error'
+  //     });
+  //   }
+  // });
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     try {
-      await ky.post(`${BACK_ENDPOINT}/api/login`,{
+      // 1. Enviar las credenciales al backend
+      const response = await ky.post(`${BACK_ENDPOINT}/api/login`,{
         json: { 
           email: emailInput.value,
-          password: passwordInput.value
+          password: passwordInput.value,
+          isAdmin: true
         }
-      })
-      location.assign('/consoles');
+      });
+      const userData = await response.json();
+      
+      // 3. Definir las URLs de redirección
+      const ADMIN_PAGE_URL = ('/games');
+      const USER_PAGE_URL = ('/consoles');
+
+      // 4. Lógica de redireccionamiento
+      if (userData && userData.isAdmin) {
+        // Si el usuario es administrador, redirigir a la página de admin
+        location.assign(ADMIN_PAGE_URL);
+      } else {
+        // Si no es administrador (o no se pudo determinar), redirigir a la página común
+        location.assign(USER_PAGE_URL);
+      }
+
     } catch (error) {
+      // Manejo de errores
       const errorData = await error?.response?.json();
       createNotification({
         title: 'Ups! Hubo un error',

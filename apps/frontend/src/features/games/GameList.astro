@@ -1,7 +1,7 @@
 ---
 import { BACK_ENDPOINT } from "../../config/endpoints";
 import GameItem from "./GameItem.astro";
-const response = await fetch(`${BACK_ENDPOINT}/api/games/playstation`);
+const response = await fetch(`${BACK_ENDPOINT}/api/games`);
 const gamesData = await response.json();
 ---
 
@@ -28,7 +28,8 @@ const gamesData = await response.json();
 
 <script>
   // @ts-nocheck
-  import gamesModule, { games } from "./games.module";
+  import gamesModule from "./games.module.js"; 
+  import { games } from "../../pages/games.astro";
   const gamesList = document.querySelector('#games-list');
   const GameItemTemplate = document.querySelector('#Game-item-template');
   games.set(JSON.parse(gamesList.dataset.games));

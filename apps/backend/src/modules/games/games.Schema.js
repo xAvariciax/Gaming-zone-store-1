@@ -9,6 +9,8 @@ export const gamesSchema = z.object({
   quantity: z.number(),
   description: z.string(),
   url: z.string(),
+  price: z.number(),
+  console: z.string(),
 });
 
 // export const gamesSchema = z.object({

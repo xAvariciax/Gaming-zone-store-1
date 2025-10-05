@@ -49,87 +49,87 @@
     </main>
   </Layout>
   <script>
-import { BACK_ENDPOINT } from "../../config/endpoints";
-import { GamesModule } from "../../features/games/Games.module.js ";
-  const itemForm = document.getElementById('itemForm');
-  const itemList = document.getElementById('itemList');
-  itemForm.addEventListener('submit', async (event) => {
-  // Evita recargar la página
-  event.preventDefault();
-  try {
-    await GamesModule.enviarDatos({
-      name: document.querySelector('itemName'),
-      description: document.querySelector('itemDescription'),
-      quantity: document.querySelector('itemQuantity'),
-      url: document.getElementById('itemImage'),
-    });
-  } catch (error) {
-    console.error('Error al enviar los datos:', error);
-  }
+// import { BACK_ENDPOINT } from "../../config/endpoints";
+// import { GamesModule } from "../../features/games/Games.module.js ";
+//   const itemForm = document.getElementById('itemForm');
+//   const itemList = document.getElementById('itemList');
+//   itemForm.addEventListener('submit', async (event) => {
+//   // Evita recargar la página
+//   event.preventDefault();
+//   try {
+//     await GamesModule.enviarDatos({
+//       name: document.querySelector('itemName'),
+//       description: document.querySelector('itemDescription'),
+//       quantity: document.querySelector('itemQuantity'),
+//       url: document.getElementById('itemImage'),
+//     });
+//   } catch (error) {
+//     console.error('Error al enviar los datos:', error);
+//   }
 
-  // Obtiene los valores de los campos del formulario
-  const itemName = document.querySelector('itemName');
-  const itemDescription = document.querySelector('itemDescription');
-  const itemQuantity = document.querySelector('itemQuantity');
-  const itemImage = document.querySelector('itemImage');
+//   // Obtiene los valores de los campos del formulario
+//   const itemName = document.querySelector('itemName');
+//   const itemDescription = document.querySelector('itemDescription');
+//   const itemQuantity = document.querySelector('itemQuantity');
+//   const itemImage = document.querySelector('itemImage');
 
-  // Crea un nuevo juego de la lista (<li>)
-  const newItem = document.createElement('li');
-  newItem.className = 'item-card';
+//   // Crea un nuevo juego de la lista (<li>)
+//   const newItem = document.createElement('li');
+//   newItem.className = 'item-card';
 
-  // Rellena el HTML del nuevo juego con los datos capturados
-  newItem.innerHTML = `
-  <img src="${itemImage}" alt="${itemName}">
-  <div class="item-info">
-  <h3>${itemName}</h3>
-  <p><strong>Descripción:</strong> ${itemDescription}</p>
-  <p><strong>Cantidad:</strong> ${itemQuantity}</p>
-  </div>
-  `;
+//   // Rellena el HTML del nuevo juego con los datos capturados
+//   newItem.innerHTML = `
+//   <img src="${itemImage}" alt="${itemName}">
+//   <div class="item-info">
+//   <h3>${itemName}</h3>
+//   <p><strong>Descripción:</strong> ${itemDescription}</p>
+//   <p><strong>Cantidad:</strong> ${itemQuantity}</p>
+//   </div>
+//   `;
 
-  // Añade el nuevo juego a la lista
-  itemList.appendChild(newItem);
+//   // Añade el nuevo juego a la lista
+//   itemList.appendChild(newItem);
 
-  // Limpia el formulario
-  itemForm.reset();
-  });
+//   // Limpia el formulario
+//   itemForm.reset();
+//   });
 
-  //backend
+//   //backend
 
-  const gamesData ={
-    name:"elden ring",
-    description:"un juego de rol de accion",
-    quantity:5,
-    url:"https://example.com/eldenring.jpg"
-  }
+//   const gamesData ={
+//     name:"elden ring",
+//     description:"un juego de rol de accion",
+//     quantity:5,
+//     url:"https://example.com/eldenring.jpg"
+//   }
 
-const apiURL = BACK_ENDPOINT + '/games'; 
+// const apiURL = BACK_ENDPOINT + '/games'; 
 
-async function enviarDatos(datosJuego) {
-  try {
-    const respuesta = await fetch(apiURL, {
-      method: 'POST', 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(datosJuego)
-    });
+// async function enviarDatos(datosJuego) {
+//   try {
+//     const respuesta = await fetch(apiURL, {
+//       method: 'POST', 
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(datosJuego)
+//     });
 
-    if (!respuesta.ok) {
-      throw new Error(`Error en la solicitud: ${respuesta.status}`);
-    }
+//     if (!respuesta.ok) {
+//       throw new Error(`Error en la solicitud: ${respuesta.status}`);
+//     }
 
-    const resultado = await respuesta.json();
-    console.log('Juego agregado con éxito:', resultado);
-    alert('¡Juego agregado con éxito!');
-    return resultado;
-  } catch (error) {
-    console.error('Hubo un problema con la operación:', error);
-    alert('Error al agregar el juego. Revisa la consola para más detalles.');
-  }
-}
-export { enviarDatos };
-export { gamesData };
+//     const resultado = await respuesta.json();
+//     console.log('Juego agregado con éxito:', resultado);
+//     alert('¡Juego agregado con éxito!');
+//     return resultado;
+//   } catch (error) {
+//     console.error('Hubo un problema con la operación:', error);
+//     alert('Error al agregar el juego. Revisa la consola para más detalles.');
+//   }
+// }
+// export { enviarDatos };
+// export { gamesData };
   // Llama a la función para enviar los datos del juego al backend
   </script>
   <style>

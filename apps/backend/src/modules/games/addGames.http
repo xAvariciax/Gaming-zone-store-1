@@ -4,5 +4,7 @@ Content-Type: application/json
   "name": "Elden Ring",
   "description": "An action RPG developed by FromSoftware.",
   "quantity": 2,
-  "url": "https://example.com/eldenring.jpg"
+  "url": "https://example.com/eldenring.jpg",
+  "price": 59.99,
+  "console": "Playstation"
 }

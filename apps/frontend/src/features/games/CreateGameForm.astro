@@ -1,105 +1,325 @@
-<!-- formulario -->
-    <h1>Añadir Nuevo Juego</h1>
+<div
+  id="modal-fondo"
+  class="fixed top-0 left-0 w-full h-full backdrop-blur-xs backdrop-brightness-70 z-50 hidden items-center justify-center"
+>
+<form
+id="game-form"
+class="bg-white p-6 rounded-md flex flex-col gap-4 border border-gray-300 md:w-[70%] lg:w-[50%]"
+>
+<h2 class="text-xl font-semibold mb-4">Añadir Nuevo Juego</h2>
+<div class="flex flex-col gap-2">
+  <label for="name-input" class="font-medium">Nombre del Juego</label>
+  <div class="relative flex items-center w-full">
+    <input
+    type="text"
+    name="name-input"
+    id="name-input"
+    class="w-full rounded-md p-2 text-base ring-1 ring-gray-300 focus:outline-none focus:ring-indigo-500"
+    placeholder="Hollow knight"
+    />
+    <span class="absolute right-2.5 hidden text-xl"></span>
+  </div>
+  <p class="text-xs font-light text-red-500 hidden">
+    El nombre no puede estar vacio.
+  </p>
+</div>
+<div class="flex flex-col gap-2">
+  <label for="price-input" class="font-medium">Precio</label>
+  <div class="relative flex items-center w-full">
+    <input
+    type="number"
+    name="price-input"
+    id="price-input"
+    class="w-full rounded-md p-2 text-base ring-1 ring-gray-300 focus:outline-none focus:ring-indigo-500"
+    placeholder="100"
+    />
+    <span class="absolute right-2.5 hidden text-xl"></span>
+  </div>
+  <p class="text-xs font-light text-red-500 hidden">
+    El precio debe ser un numero entero.
+  </p>
+</div>
 
-    <form id="itemForm" class="item-form">
-      <div class="form-group">
-        <label for="itemName" class="text-white">Nombre:</label>
-        <input type="text" id="itemName" required>
-      </div>
+<div class="flex flex-col gap-2">
+  <label for="image-url-input" class="font-medium">URL de Imagen</label>
+  <div class="relative flex items-center w-full">
+    <input
+    type="url"
+    name="image-url-input"
+    id="image-url-input"
+    class="w-full rounded-md p-2 text-base ring-1 ring-gray-300 focus:outline-none focus:ring-indigo-500"
+    placeholder="https://example.com/imagen.jpg"
+    />
+    <span class="absolute right-2.5 hidden text-xl"></span>
+  </div>
+  <p class="text-xs font-light text-red-500 hidden">
+    La URL de la imagen no es válida.
+  </p>
+</div>
 
-      <div class="form-group">
-        <label for="itemDescription">Descripción:</label>
-        <textarea id="itemDescription" required></textarea>
-      </div>
+<div class="flex flex-col gap-2">
+  <label for="console-select" class="font-medium">Tipo de Consola</label>
+  <div class="relative flex items-center w-full">
+    <select
+    name="console-select"
+    id="console-select"
+    class="w-full rounded-md p-2 text-base ring-1 ring-gray-300 focus:outline-none focus:ring-indigo-500"
+    >
+    <option value="" disabled selected>Selecciona una consola</option>
+    <option value="PC">PC</option>
+    <option value="XBOX">XBOX</option>
+    <option value="PLAYSTATION">PLAYSTATION</option>
+    <option value="NINTENDO SWITCH">NINTENDO SWITCH</option>
+  </select>
+  <span class="absolute right-2.5 hidden text-xl"></span>
+</div>
+<p class="text-xs font-light text-red-500 hidden">
+  Debes seleccionar un tipo de consola.
+</p>
+</div>
 
-      <div class="form-group">
-        <label for="itemQuantity">Cantidad:</label>
-        <input type="number" id="itemQuantity" min="1" required>
-      </div>
+<div class="flex flex-col gap-2">
+  <label for="description-textarea" class="font-medium">Descripción</label>
+  <div class="relative flex items-center w-full">
+    <textarea
+    name="description-textarea"
+    id="description-textarea"
+    rows="4"
+    class="w-full rounded-md p-2 text-base ring-1 ring-gray-300 focus:outline-none focus:ring-indigo-500"
+    placeholder="Escribe una breve descripción del juego..."
+    ></textarea>
+    <span class="absolute right-2.5 hidden text-xl"></span>
+  </div>
+  <p class="text-xs font-light text-red-500 hidden">
+    La descripción no puede estar vacía.
+  </p>
+</div>
 
-      <div class="form-group">
-        <label for="itemImage">URL de la Imagen:</label>
-        <input type="url" id="itemImage" required>
-      </div>
+<div class="flex flex-col gap-2">
+  <label for="quantity-input" class="font-medium">Cantidad</label>
+  <div class="relative flex items-center w-full">
+    <input
+    type="number"
+    name="quantity-input"
+    id="quantity-input"
+    class="w-full rounded-md p-2 text-base ring-1 ring-gray-300 focus:outline-none focus:ring-indigo-500"
+    placeholder="10"
+    />
+    <span class="absolute right-2.5 hidden text-xl"></span>
+  </div>
+  <p class="text-xs font-light text-red-500 hidden">
+    La cantidad debe ser un número entero positivo.
+  </p>
+</div>
 
-      <div class="form-group">
-        <label for="itemPrice">Precio</label>
-        <input type="number" id="itemPrice" min="1" required>
-      </div>
-
-      <button type="submit" class="submit-button">Agregar a la lista</button>
-    </form>
+<div class="flex justify-end gap-2">
+  <button
+  type="button"
+      id="cerrar-modal"
+      class="bg-gray-300 py-2 px-4 text-gray-700 text-center uppercase font-medium rounded-md"
+      >
+      Cancelar
+    </button>
+    <button
+    id="product-form-btn"
+    disabled
+    class="bg-indigo-700 py-2 px-4 text-white text-center uppercase font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+    Añadir juego
+  </button>
+</div>
+</form>
+</div>
 
 <script>
-// @ts-nocheck
-// Modulos
-import gamesModule from "../../features/games/Games.module.js";
-
-// Selectores
-const inputName = document.querySelector('#name-input');
-const inputNumber = document.querySelector('#phone-input');
-const form = document.querySelector('#main-form');
-const formBtn = document.querySelector('#main-form-btn');
-const gameList = document.querySelector('#game-list');
+  // @ts-nocheck
+  // @ts-nocheck
+import GamesModule from "./Games.module.js";
+const inputName = document.querySelector("#name-input");
+const inputPrice = document.querySelector("#price-input");
+const inputImageUrl = document.querySelector("#image-url-input");
+const selectConsole = document.querySelector("#console-select");
+const textareaDescription = document.querySelector("#description-textarea");
+const inputQuantity = document.querySelector("#quantity-input");
+const form = document.querySelector("#game-form");
+const formBtn = document.querySelector("#product-form-btn");
+const modalFondo = document.querySelector("#modal-fondo");
+const cerrarModalBtn = document.querySelector("#cerrar-modal");
 
 // Validaciones del formulario
 let nameValidation = false;
-let phoneValidation = false;
+let priceValidation = false;
+// Nuevas validaciones
+let imageUrlValidation = false;
+let consoleValidation = false;
+let descriptionValidation = false;
+let quantityValidation = false;
 
-// Funciones
 const renderValidation = (input, validation) => {
   const helperText = input.parentElement.nextElementSibling;
   const iconContainer = input.nextElementSibling;
-  
-  if (input.value === '') {
-    input.classList.remove('input-invalid', 'input-valid');
-    helperText?.classList.remove('show-helper-text');
-    iconContainer.innerHTML = '';
-    iconContainer.classList.remove('show');
+
+  if (input.value === "" && input.type !== 'url' && input.tagName !== 'SELECT' && input.tagName !== 'TEXTAREA') {
+    // Caso especial para campos vacíos (excepto URL, SELECT y TEXTAREA que tienen su propia lógica de validación inicial)
+    input.classList.remove("input-invalid", "input-valid");
+    helperText?.classList.remove("show-helper-text");
+    iconContainer.innerHTML = "";
+    iconContainer.classList.remove("show");
   } else if (validation) {
-    input.classList.add('input-valid');
-    input.classList.remove('input-invalid');
-    helperText?.classList.remove('show-helper-text');
-    iconContainer.innerHTML = '<span class="iconify" data-icon="mdi:check-circle" style="color: green;"></span>';
-    iconContainer.classList.add('show');
+    input.classList.add("input-valid");
+    input.classList.remove("input-invalid");
+    helperText?.classList.remove("show-helper-text");
+    iconContainer.innerHTML =
+      '<span class="iconify" data-icon="mdi:check-circle" style="color: green;"></span>';
+    iconContainer.classList.add("show");
   } else {
-    input.classList.add('input-invalid');
-    input.classList.remove('input-valid');
-    helperText?.classList.add('show-helper-text');
-    iconContainer.innerHTML = '<span class="iconify" data-icon="mdi:close-circle" style="color: red;"></span>';
-    iconContainer.classList.add('show');
+    input.classList.add("input-invalid");
+    input.classList.remove("input-valid");
+    helperText?.classList.add("show-helper-text");
+    iconContainer.innerHTML =
+      '<span class="iconify" data-icon="mdi:close-circle" style="color: red;"></span>';
+    iconContainer.classList.add("show");
   }
-}
+};
 
 const renderButtonState = () => {
-  if (nameValidation && phoneValidation) {
+  if (
+    nameValidation &&
+    priceValidation &&
+    imageUrlValidation &&
+    consoleValidation &&
+    descriptionValidation &&
+    quantityValidation
+  ) {
     formBtn.disabled = false;
   } else {
     formBtn.disabled = true;
   }
-}
+};
 
-// Eventos
-inputName.addEventListener('input', e => {
-  nameValidation = NAME_REGEX.test(inputName.value);
+inputName.addEventListener("input", (e) => {
+  nameValidation = e.target.value.trim().length > 0;
   renderValidation(inputName, nameValidation);
   renderButtonState();
 });
 
-inputNumber.addEventListener('input', e => {
-  phoneValidation = PHONE_REGEX.test(inputNumber.value);
-  renderValidation(inputNumber, phoneValidation);
+inputPrice.addEventListener("input", (e) => {
+  // Validamos que sea un número positivo y mayor a cero.
+  const priceValue = parseInt(e.target.value);
+  priceValidation = !isNaN(priceValue) && priceValue > 0;
+  renderValidation(inputPrice, priceValidation);
   renderButtonState();
 });
 
-form.addEventListener('submit', async e => {
+inputImageUrl.addEventListener("input", (e) => {
+  const urlValue = e.target.value.trim();
+  // Validamos que la URL no esté vacía y que tenga una estructura básica de URL
+  try {
+    new URL(urlValue);
+    imageUrlValidation = true;
+  } catch (error) {
+    imageUrlValidation = urlValue.length > 0 ? false : true; // Permitimos vacío si el backend lo acepta, si no, debe ser una URL
+  }
+  // solo validaremos que no esté vacía
+  imageUrlValidation = urlValue.length > 0; 
+  renderValidation(inputImageUrl, imageUrlValidation);
+  renderButtonState();
+});
+
+selectConsole.addEventListener("change", (e) => {
+  // Validamos que se haya seleccionado un valor diferente
+  consoleValidation = e.target.value.length > 0;
+  renderValidation(selectConsole, consoleValidation);
+  renderButtonState();
+});
+
+textareaDescription.addEventListener("input", (e) => {
+  descriptionValidation = e.target.value.trim().length > 0;
+  renderValidation(textareaDescription, descriptionValidation);
+  renderButtonState();
+});
+
+inputQuantity.addEventListener("input", (e) => {
+  // Validamos que sea un número entero positivo (incluido el cero si se permite stock 0)
+  const quantityValue = parseInt(e.target.value);
+  quantityValidation = !isNaN(quantityValue) && quantityValue >= 0; 
+  renderValidation(inputQuantity, quantityValidation);
+  renderButtonState();
+});
+
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  // 1. Validar
-  if (!nameValidation || !phoneValidation) return;
-  // 2. Agregar el contacto
-  await ContactsModule.addContact({
-    name: inputName.value,
-    phone: inputNumber.value
-  });
+  // Incluimos todas las validaciones antes de enviar
+  if (
+    !nameValidation ||
+    !priceValidation ||
+    !imageUrlValidation ||
+    !consoleValidation ||
+    !descriptionValidation ||
+    !quantityValidation
+  )
+    return;
+
+  try {
+    await ProductsModule.addProduct({
+      name: inputName.value,
+      price: parseInt(inputPrice.value),
+      // Datos nuevos a enviar
+      imageUrl: inputImageUrl.value,
+      consoleType: selectConsole.value,
+      description: textareaDescription.value,
+      quantity: parseInt(inputQuantity.value),
+    });
+
+    modalFondo.classList.add("hidden");
+    form.reset();
+
+    // Reiniciamos el estado de las validaciones y del botón
+    nameValidation = false;
+    priceValidation = false;
+    imageUrlValidation = false;
+    consoleValidation = false;
+    descriptionValidation = false;
+    quantityValidation = false;
+    renderButtonState();
+    renderValidation(inputName, nameValidation);
+    renderValidation(inputPrice, priceValidation);
+    // Reiniciamos la validación visual para los nuevos campos
+    renderValidation(inputImageUrl, imageUrlValidation);
+    renderValidation(selectConsole, consoleValidation);
+    renderValidation(textareaDescription, descriptionValidation);
+    renderValidation(inputQuantity, quantityValidation);
+  } catch (error) {
+    console.log(error);
+    let description = "Error desconocido";
+    if (error.response) {
+      const errorData = await error.response.json();
+      description = errorData.error;
+    }
+    createNotification({
+      title: "Ups! Hubo un error",
+      description,
+      type: "error",
+    });
+  }
+});
+
+cerrarModalBtn.addEventListener("click", () => {
+  modalFondo.classList.add("hidden");
+  form.reset();
+  nameValidation = false;
+  priceValidation = false;
+  imageUrlValidation = false;
+  consoleValidation = false;
+  descriptionValidation = false;
+  quantityValidation = false;
+  renderButtonState();
+  renderValidation(inputName, nameValidation);
+  renderValidation(inputPrice, priceValidation);
+  // Reiniciamos la validación visual para los nuevos campos
+  renderValidation(inputImageUrl, imageUrlValidation);
+  renderValidation(selectConsole, consoleValidation);
+  renderValidation(textareaDescription, descriptionValidation);
+  renderValidation(inputQuantity, quantityValidation);
 });
 </script>
