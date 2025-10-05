@@ -1,24 +1,42 @@
+import { atom } from "nanostores";
+import { createNotification } from "../notifications/notificiation.js";
+import { BACK_ENDPOINT } from "../../config/endpoints.js"; 
+import ky from "ky"; 
+const BASE_URL = `${BACK_ENDPOINT}/api/games`;
 /** 
  * @typedef Games
  * @type {object}
- * @property {string} id El id del juego
+ * @property {Number} id El id del juego
  * @property {string} name El nombre del juego
- * @property {string} quanty El numero del juego
+ * @property {Number} quanty El numero del juego
  * @property {string} description la descripcion del juego
  * @property {string} url la imagen del juego
+ * @property {Number} price el precio del juego
  * 
  */
-
 /** 
- * @type {Game[]} */
+ * @type {Games[]} */
 let Games = [];
 
 /**
- * Agrega un Gameo al array de Games
+ * Agrega un Game al array de Games
  * @param {Games} newGames
  */
-const addGames = (newGames) => {
-  Games = Games.concat(newGames);
+const addGames = async (newGames) => {
+  try {
+    const GamesCreated = await ky.post(BASE_URL, {json: newGames, credentials: 'include'}).json();
+    Games.set(Games.get().concat(GamesCreated));
+    gamesFiltered.set(GamesFiltered.get().concat(GamesCreated));
+    createNotification({title: 'Game creado!',type: 'success'});
+  } catch (error) {
+    console.log(error);
+    const errorData = await error.response.json();
+    createNotification({
+      title: 'Ups! Hubo un error',
+      description: errorData.error,
+      type: 'error'
+    });
+  }
 }
 
 // Icons
@@ -124,43 +142,70 @@ const getGamesFromBrowser = () => {
  * Elimina un Gameo del array de Games
  * @param {string} id El id del Gameo a eliminar
  */
-const removeGame = (id) => {
-  Games = Games.filter(Game => Game.id !== id);
-
-  // Manera de hacerlo sin metodos de javascript
-
-  // Games = []
-  // for (const Game of Games) {
-  //   if (Game.id !== id) {
-  //     Games = [...Games, Game]
-  //   }
-  // }
-}
+const removeGame = async (id) => {
+  const url = `${BASE_URL}/${id}`;
+  try {
+    const gameDeleted = await ky.delete(url, { credentials: 'include'}).json();
+    games.set(games.get().filter(game => game.id != gameDeleted.id));
+    gamesFiltered.set(gamesFiltered.get().filter(game => game.id != gameDeleted.id));
+    createNotification({
+      title: 'gameo eliminado!',
+      description: `${gameDeleted.name}`,
+      type: 'success'
+    });
+  } catch (error) {
+    console.log(error);
+    const errorData = await error.response.json();
+    createNotification({
+      title: 'Ups! Hubo un error',
+      description: errorData.error,
+      type: 'error'
+    });
+  }
+};
 
 /**
- * Actualizar un Gameo
- * @param {Game} updatedGame El Gameo actualizado
+ * Actualizar un Game
+ * @param {Game} updatedGame El Game actualizado
  */
 
-const updateGame = (updatedGame) => {
-// Forma mas directa:
-
-// Games = Games.map(Game =>
-//   Game.id === updatedGame.id ? updatedGame : Game
-// );
-
-  Games = Games.map(Game => {
-    if (Game.id === updatedGame.id) {
-      return updatedGame;
-    } else {
-    return Game;
-    }
-  })
-}
+const updateGame = async (gameToUpdate) => {
+  const url = `${BASE_URL}/${gameToUpdate.id}`;
+  try {
+    const gameUpdated = await ky.put(url, {json: gameToUpdate, credentials: 'include'}).json();
+    games.set(games.get().map(game => {
+      if (game.id == gameUpdated.id) { 
+        return gameUpdated;
+      } else {
+        return game;
+      }
+    }));
+    gamesFiltered.set(gamesFiltered.get().map(game => {
+      if (game.id == gameUpdated.id) { 
+        return gameUpdated;
+      } else {
+        return game;
+      }
+    }));
+    createNotification({
+      title: 'game actualizado!',
+      description: `${gameUpdated.name}`,
+      type: 'success'
+    });
+  } catch (error) {
+    console.log(error);
+    const errorData = await error.response.json();
+    createNotification({
+      title: 'Ups! Hubo un error',
+      description: errorData.error,
+      type: 'error'
+    });
+  }
+};
 
 
   
-export {
+export default {
   addGames,
   renderGames,
   saveGamesInBrowser,
@@ -168,5 +213,6 @@ export {
   removeGame,
   updateGame,
   editIcon,
-  editingIcon
+  editingIcon,
+  gamesModule
 }

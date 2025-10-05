@@ -1,43 +1,46 @@
-<form id="main-form" class="p-2 rounded-md flex flex-col gap-4 border border-gray-300 md:w-[70%] lg:w-[50%]">
-  <div class="flex flex-col gap-2">
-    <label for="name-input" class="font-medium">Nombre</label>
-    <div class="relative flex items-center w-full">
-      <input type="text" name="name-input" id="name-input" class="w-full rounded-md p-2 text-base ring-1 ring-gray-300 focus:outline-none focus:ring-indigo-500" placeholder="Gabriel Garcia">
-      <span class="absolute right-2.5 hidden text-xl"></span>
-    </div>
-    <p class="text-xs font-light text-red-500 hidden">
-      Tiene que tener nombre y apellido. <br>
-      Ambos comienzan con mayusculas.
-    </p>
-  </div>
-  <div class="flex flex-col gap-2">
-    <label for="phone-input" class="font-medium">Numero</label>
-    <div class="relative flex items-center w-full">
-      <input type="text" name="phone-input" id="phone-input" class="w-full rounded-md p-2 text-base ring-1 ring-gray-300 focus:outline-none focus:ring-indigo-500" placeholder="04122110509">
-      <span class="absolute right-2.5 hidden text-xl"></span>
-    </div>
-    <p class="text-xs font-light text-red-500 hidden">
-      Tiene que ser un numero venezolano valido.
-    </p>
-  </div>
-  <button id="main-form-btn" disabled class="bg-indigo-700 py-2 px-4 text-white text-center uppercase font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed">Crear</button>
-</form>
+<!-- formulario -->
+    <h1>Añadir Nuevo Juego</h1>
+
+    <form id="itemForm" class="item-form">
+      <div class="form-group">
+        <label for="itemName" class="text-white">Nombre:</label>
+        <input type="text" id="itemName" required>
+      </div>
+
+      <div class="form-group">
+        <label for="itemDescription">Descripción:</label>
+        <textarea id="itemDescription" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="itemQuantity">Cantidad:</label>
+        <input type="number" id="itemQuantity" min="1" required>
+      </div>
+
+      <div class="form-group">
+        <label for="itemImage">URL de la Imagen:</label>
+        <input type="url" id="itemImage" required>
+      </div>
+
+      <div class="form-group">
+        <label for="itemPrice">Precio</label>
+        <input type="number" id="itemPrice" min="1" required>
+      </div>
+
+      <button type="submit" class="submit-button">Agregar a la lista</button>
+    </form>
 
 <script>
 // @ts-nocheck
 // Modulos
-import ContactsModule from "./contacts.module";
+import gamesModule from "../../features/games/Games.module.js";
 
 // Selectores
 const inputName = document.querySelector('#name-input');
 const inputNumber = document.querySelector('#phone-input');
 const form = document.querySelector('#main-form');
 const formBtn = document.querySelector('#main-form-btn');
-const contactsList = document.querySelector('#contacts-list');
-
-// Regex
-const NAME_REGEX = /^[A-Z][a-z]*[ ][A-Z][a-z]{3,}[ ]{0,1}$/;
-const PHONE_REGEX = /^[0](412|424|414|426|416|212)[0-9]{7}$/;
+const gameList = document.querySelector('#game-list');
 
 // Validaciones del formulario
 let nameValidation = false;

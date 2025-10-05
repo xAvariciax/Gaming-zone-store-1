@@ -2,7 +2,7 @@
   import Layout from "../../layouts/Layout.astro"
   import { Image } from "astro:assets";
   import playstationbg from "../../assets/multimedia/playstation/playstationbg.jpg";
-
+  import { GamesModule } from "../../features/games/Games.module.js ";
   ---
 
   <Layout>
@@ -32,6 +32,11 @@
         <input type="url" id="itemImage" required>
       </div>
 
+      <div class="form-group">
+        <label for="itemPrice">Precio</label>
+        <input type="number" id="itemPrice" min="1" required>
+      </div>
+
       <button type="submit" class="submit-button">Agregar a la lista</button>
     </form>
     <!--  lista de los juegos -->
@@ -45,20 +50,28 @@
   </Layout>
   <script>
 import { BACK_ENDPOINT } from "../../config/endpoints";
-
-
-    
+import { GamesModule } from "../../features/games/Games.module.js ";
   const itemForm = document.getElementById('itemForm');
   const itemList = document.getElementById('itemList');
-  itemForm.addEventListener('submit', function(event) {
+  itemForm.addEventListener('submit', async (event) => {
   // Evita recargar la página
   event.preventDefault();
+  try {
+    await GamesModule.enviarDatos({
+      name: document.querySelector('itemName'),
+      description: document.querySelector('itemDescription'),
+      quantity: document.querySelector('itemQuantity'),
+      url: document.getElementById('itemImage'),
+    });
+  } catch (error) {
+    console.error('Error al enviar los datos:', error);
+  }
 
   // Obtiene los valores de los campos del formulario
-  const itemName = document.getElementById('itemName').value;
-  const itemDescription = document.getElementById('itemDescription').value;
-  const itemQuantity = document.getElementById('itemQuantity').value;
-  const itemImage = document.getElementById('itemImage').value;
+  const itemName = document.querySelector('itemName');
+  const itemDescription = document.querySelector('itemDescription');
+  const itemQuantity = document.querySelector('itemQuantity');
+  const itemImage = document.querySelector('itemImage');
 
   // Crea un nuevo juego de la lista (<li>)
   const newItem = document.createElement('li');
@@ -109,7 +122,7 @@ async function enviarDatos(datosJuego) {
     const resultado = await respuesta.json();
     console.log('Juego agregado con éxito:', resultado);
     alert('¡Juego agregado con éxito!');
-    itemForm.reset();
+    return resultado;
   } catch (error) {
     console.error('Hubo un problema con la operación:', error);
     alert('Error al agregar el juego. Revisa la consola para más detalles.');

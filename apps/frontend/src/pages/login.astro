@@ -50,7 +50,7 @@ import Notification from "../features/notifications/Notification.astro";
 <script>
   // @ts-nocheck
   import { BACK_ENDPOINT } from "../config/endpoints";
-  import AuthModule from "../features/notifications/Notification.astro";
+  import AuthModule from "../features/auth/auth.module";
   import { createNotification } from "../features/notifications/notificiation";
   import ky from 'ky';
 
@@ -63,7 +63,7 @@ import Notification from "../features/notifications/Notification.astro";
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     try {
-      await ky.post(`${BACK_ENDPOINT}/api/login`, {
+      await ky.post(`${BACK_ENDPOINT}/api/login`,{
         json: { 
           email: emailInput.value,
           password: passwordInput.value

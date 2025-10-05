@@ -1,7 +1,6 @@
 import ky from "ky";
 import { BACK_ENDPOINT } from "../../config/endpoints.js";
 import { atom } from "nanostores";
-
 export const user = atom(null);
 
 const login = async ({email, password}) => {

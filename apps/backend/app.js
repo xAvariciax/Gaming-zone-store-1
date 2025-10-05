@@ -4,20 +4,27 @@ import { ZodError } from 'zod/v4';
 import { ErrorWithStatus } from './src/utils/errorTypes.js';
 import { DatabaseError } from 'pg';
 import cors from 'cors';
+import paymentRouter from './src/modules/payment/payment.routes.js';
+import cookieParser from 'cookie-parser';
 import usersRouter from './src/modules/users/users.routes.js';
 import jwt from 'jsonwebtoken';
+import { authenticateUser } from './src/modules/auth/auth.middlewares.js';
+import authRouter from './src/modules/auth/auth.routes.js';
 import loginRouter from './src/modules/login/login.routes.js';
 import path from 'path';
 // import {handler as ssrHandler} from './dist/server/entry.mjs'
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: ['http://localhost:4321'] }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/api/games', gamesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/payment', authenticateUser, paymentRouter);
 app.use('/', express.static(path.join(import.meta.dirname, 'dist', 'client')));
 // app.use(ssrHandler);
 

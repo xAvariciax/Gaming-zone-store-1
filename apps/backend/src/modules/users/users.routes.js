@@ -11,9 +11,9 @@ usersRouter.post('/', async (req, res) => {
   const passwordHash = await bcrypt.hash(body.password, 10);
   const newUser = await usersRepository.addOne({ email: body.email, passwordHash });
   const token = jwt.sign(
-    { id: newUser.id, email: newUser.email },
+    { id: newUser.id, email: newUser.email, isAdmin: newUser.is_admin },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: '1m' },
+    { expiresIn: '10m' },
   );
   await nodemailerService.sendMail({
     from: process.env.EMAIL_USER,

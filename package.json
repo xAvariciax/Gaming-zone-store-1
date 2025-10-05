@@ -24,5 +24,8 @@
     "url": "https://github.com/xAvariciax/Gaming-Zone-Store-1/issues"
   },
   "homepage": "https://github.com/xAvariciax/Gaming-Zone-Store-1#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "cookie-parser": "^1.4.7"
+  }
 }
