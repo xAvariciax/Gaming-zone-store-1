@@ -1,249 +1,117 @@
-  ---
-  import Layout from "../../layouts/Layout.astro"
-  import { Image } from "astro:assets";
-  import playstationbg from "../../assets/multimedia/playstation/playstationbg.jpg";
-  import { GamesModule } from "../../features/games/Games.module.js ";
-  ---
+---
+import { BACK_ENDPOINT } from "../../config/endpoints";
+import GameItem from "../../features/games/GameItem.astro";
+const response = await fetch(`${BACK_ENDPOINT}/api/games`);
+const gamesData = await response.json();
+---
 
-  <Layout>
-    <!-- formulario -->
-      <main class="playstation">
-      <div class="container">
-    <h1>Añadir Nuevo Juego</h1>
+<ul data-games={JSON.stringify(gamesData)} id="games-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border bg-gradient-to-tr 100  border-gray-300 h-full md:w-[70%] lg:w-[50%]">
+  <template id="Game-item-template">  
+    <GameItem 
+      name="Elden ring"
+      quanty="3"
+      id={0}
+      description="Descripcion del juego"
+      url="https://example.com/image.jpg"
+    />
+  </template>
+  {gamesData.map(Game => (
+    <GameItem 
+      name={Game.name} 
+      quanty={Game.quanty} 
+      id={Game.id}
+      description={Game.description}
+      url={Game.url}
+    />
+  ))}
+</ul>
 
-    <form id="itemForm" class="item-form">
-      <div class="form-group">
-        <label for="itemName" class="text-white">Nombre:</label>
-        <input type="text" id="itemName" required>
-      </div>
-
-      <div class="form-group">
-        <label for="itemDescription">Descripción:</label>
-        <textarea id="itemDescription" required></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="itemQuantity">Cantidad:</label>
-        <input type="number" id="itemQuantity" min="1" required>
-      </div>
-
-      <div class="form-group">
-        <label for="itemImage">URL de la Imagen:</label>
-        <input type="url" id="itemImage" required>
-      </div>
-
-      <div class="form-group">
-        <label for="itemPrice">Precio</label>
-        <input type="number" id="itemPrice" min="1" required>
-      </div>
-
-      <button type="submit" class="submit-button">Agregar a la lista</button>
-    </form>
-    <!--  lista de los juegos -->
-  <h2>Lista de Juegos</h2>
-    <ul id="itemList" class="item-list">
-      <!-- Los elementos de la lista se agregarán aquí dinámicamente -->
-      </ul>
-  </div>
-
-    </main>
-  </Layout>
-  <script>
-// import { BACK_ENDPOINT } from "../../config/endpoints";
-// import { GamesModule } from "../../features/games/Games.module.js ";
-//   const itemForm = document.getElementById('itemForm');
-//   const itemList = document.getElementById('itemList');
-//   itemForm.addEventListener('submit', async (event) => {
-//   // Evita recargar la página
-//   event.preventDefault();
-//   try {
-//     await GamesModule.enviarDatos({
-//       name: document.querySelector('itemName'),
-//       description: document.querySelector('itemDescription'),
-//       quantity: document.querySelector('itemQuantity'),
-//       url: document.getElementById('itemImage'),
-//     });
-//   } catch (error) {
-//     console.error('Error al enviar los datos:', error);
-//   }
-
-//   // Obtiene los valores de los campos del formulario
-//   const itemName = document.querySelector('itemName');
-//   const itemDescription = document.querySelector('itemDescription');
-//   const itemQuantity = document.querySelector('itemQuantity');
-//   const itemImage = document.querySelector('itemImage');
-
-//   // Crea un nuevo juego de la lista (<li>)
-//   const newItem = document.createElement('li');
-//   newItem.className = 'item-card';
-
-//   // Rellena el HTML del nuevo juego con los datos capturados
-//   newItem.innerHTML = `
-//   <img src="${itemImage}" alt="${itemName}">
-//   <div class="item-info">
-//   <h3>${itemName}</h3>
-//   <p><strong>Descripción:</strong> ${itemDescription}</p>
-//   <p><strong>Cantidad:</strong> ${itemQuantity}</p>
-//   </div>
-//   `;
-
-//   // Añade el nuevo juego a la lista
-//   itemList.appendChild(newItem);
-
-//   // Limpia el formulario
-//   itemForm.reset();
-//   });
-
-//   //backend
-
-//   const gamesData ={
-//     name:"elden ring",
-//     description:"un juego de rol de accion",
-//     quantity:5,
-//     url:"https://example.com/eldenring.jpg"
-//   }
-
-// const apiURL = BACK_ENDPOINT + '/games'; 
-
-// async function enviarDatos(datosJuego) {
-//   try {
-//     const respuesta = await fetch(apiURL, {
-//       method: 'POST', 
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify(datosJuego)
-//     });
-
-//     if (!respuesta.ok) {
-//       throw new Error(`Error en la solicitud: ${respuesta.status}`);
-//     }
-
-//     const resultado = await respuesta.json();
-//     console.log('Juego agregado con éxito:', resultado);
-//     alert('¡Juego agregado con éxito!');
-//     return resultado;
-//   } catch (error) {
-//     console.error('Hubo un problema con la operación:', error);
-//     alert('Error al agregar el juego. Revisa la consola para más detalles.');
-//   }
-// }
-// export { enviarDatos };
-// export { gamesData };
-  // Llama a la función para enviar los datos del juego al backend
-  </script>
-  <style>
-    html,
-    .playstation{
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('../../assets/multimedia/playstation/bg.jpg');
-      background-size: cover;
-      background-position: center;
-      overflow: auto;	
+<script>
+  // @ts-nocheck
+  import gamesModule from "../../features/games/games.module.js"; 
+  import { games } from "../../pages/games.astro";
+  const gamesList = document.querySelector('#games-list');
+  const GameItemTemplate = document.querySelector('#Game-item-template');
+  games.set(JSON.parse(gamesList.dataset.games));
+  games.listen(games => {    
+    // Reiniciamos el estado de la lista
+    gamesList.innerHTML = '';
+    for (const Game of games) {
+      // Clonamos el componente del li
+      const GameItem = GameItemTemplate.content.cloneNode(true).children[0];
+      // Seleccionamos los inputs a reemplazar
+      const inputName = GameItem.children[0].children[0];
+      const inputQuanty = GameItem.children[0].children[1];
+      const inputDescription = GameItem.children[0].children[2];
+      const inputImage = GameItem.children[0].children[3];
+      // Editamos el li
+      GameItem.id = Game.id;
+      inputName.value = Game.name;
+      inputQuanty.value = Game.phone;
+      inputDescription.value = Game.description;
+      inputImage.src = Game.url;
+      // Adjuntamos el nuevo li a la lista      
+      gamesList.append(GameItem);
     }
-    h2, h1{
-      text-align: center;
-      
-    }
-    ul{
-      max-height: 400px;
-      overflow: auto;
-    }
-  .container {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: #f0f4f83b;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    color: white;
+  });
+  gamesList.addEventListener('click', async e => {
+    const deleteBtn = e.target.closest('.delete-btn');
+    const editBtn = e.target.closest('.edit-btn');
+  
+    if (deleteBtn) {
+      // 1. Encuentro el li
+      const li = deleteBtn.parentElement.parentElement;
+      // 2. Actualizo el array en js, usando el metodo filter para devolver todos los Gameos excepto el que quiero eliminar.
+      await gamesModule.removeGame(li.id);
     }
 
-    .item-form, .item-list {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    color: white;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    label {
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: white;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="url"],
-    textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    .submit-button {
-      padding: 12px 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .submit-button:hover {
-      background-color: #0056b3;
-    }
-
-    .item-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .item-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background-color: #fff;
-    }
-    
-    .item-card img {
-      max-width: 150px;
-      height: auto;
-      border-radius: 4px;
-      margin-bottom: 10px;
-    }
-
-    .item-info {
-      text-align: center;
-    }
-
-    /* Responsividad */
-    @media (min-width: 600px) {
-      .item-card {
-        flex-direction: row;
-        align-items: flex-start;
-        gap: 20px;
+    if (editBtn) {
+      // 1. Encuentro el li
+      const li = editBtn.parentElement.parentElement;
+      // 2. Obtener el status
+      const status = li.dataset.status;
+      // 3. Obtener los inputs
+      const GameInputName = li.children[0].children[0];
+      const GameInputQuanty = li.children[0].children[1];
+      const GameInputDescription = li.children[0].children[2];
+      const GameInputImage = li.children[0].children[3];
+      // 4. Obtener el boton
+      const GameEditBtn = li.children[1].children[0];
+      if (status === 'inputs-deshabilitados') {
+        // 1. Remover el readonly (No se puede editar) de los inputs.
+        GameInputName.removeAttribute('readonly');
+        GameInputQuanty.removeAttribute('readonly');
+        GameInputDescription.removeAttribute('readonly');
+        GameInputImage.removeAttribute('readonly');
+        // 2. Cambiar el status a inputs-habilitados
+        li.dataset.status = 'inputs-habilitados';
+        // 3. Cambiar icono del boton para reflejar el estado
+        GameEditBtn.children[0].classList.add('hidden');
+        GameEditBtn.children[1].classList.remove('hidden');
+        // 4. Cambiar estilos de los inputs para reflejar el estado
       }
 
-      .item-card img {
-        margin-bottom: 0;
-      }
-
-      .item-info {
-        text-align: left;
+      if (status === 'inputs-habilitados') {
+        // 1. Agegar el readonly (No se puede editar) de los inputs.
+        GameInputName.setAttribute('readonly', true);
+        GameInputQuanty.setAttribute('readonly', true);
+        GameInputDescription.setAttribute('readonly', true);
+        GameInputImage.setAttribute('readonly', true);
+        // 2. Cambiar el status a inputs-deshabilitados
+        li.dataset.status = 'inputs-deshabilitados';
+        // 3. Cambiar icono del boton para reflejar el estado
+        GameEditBtn.children[0].classList.remove('hidden');
+        GameEditBtn.children[1].classList.add('hidden');
+        // 4. Actualizar el Game
+        const GameToUpdate = {
+          id: li.id,
+          name: GameInputName.value,
+          quanty: GameInputQuanty.value,
+          description: GameInputDescription.value,
+          url: GameInputImage.value
+        }
+        await gamesModule.updateGame(GameToUpdate);
       }
     }
-
-  </style>
+  });
+</script>

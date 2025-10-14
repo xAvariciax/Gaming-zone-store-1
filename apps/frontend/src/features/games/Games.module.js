@@ -205,7 +205,7 @@ const updateGame = async (gameToUpdate) => {
 
 
   
-export default {
+export default gamesModule ={
   addGames,
   renderGames,
   saveGamesInBrowser,
@@ -213,6 +213,5 @@ export default {
   removeGame,
   updateGame,
   editIcon,
-  editingIcon,
-  gamesModule,
+  editingIcon
 }
