@@ -43,7 +43,7 @@ const findByEmail = async (payload) => {
 const findById = async (id) => {
   const response = await db.query(
     `
-    SELECT id, email, verify_email, is_admin FROM users
+    SELECT id, email, verify_email, Administrator FROM users
     WHERE id = $1
   `,
     [id],

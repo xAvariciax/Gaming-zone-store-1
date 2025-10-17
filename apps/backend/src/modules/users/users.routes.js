@@ -11,7 +11,7 @@ usersRouter.post('/', async (req, res) => {
   const passwordHash = await bcrypt.hash(body.password, 10);
   const newUser = await usersRepository.addOne({ email: body.email, passwordHash });
   const token = jwt.sign(
-    { id: newUser.id, email: newUser.email, isAdmin: newUser.is_admin },
+    { id: newUser.id, email: newUser.email, Administrator: newUser.Administrator },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: '10m' },
   );

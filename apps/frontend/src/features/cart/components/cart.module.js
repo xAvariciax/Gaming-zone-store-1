@@ -51,8 +51,8 @@ const addProductToLocalStorage = ({ productId, quantity = 1, name, price }) => {
 
   saveCartToLocalStorage(currentCart);
   createNotification({
-    title: 'Producto añadido',
-    description: 'El producto se agregó a tu carrito.',
+    title: 'juego añadido',
+    description: 'El juego se agregó a tu carrito.',
     type: 'success'
   });
 };
