@@ -1,30 +1,33 @@
 ---
 import { BACK_ENDPOINT } from "../../config/endpoints";
+import Layout from "../../layouts/Layout.astro"
 import GameItem from "../../features/games/GameItem.astro";
 const response = await fetch(`${BACK_ENDPOINT}/api/games`);
 const gamesData = await response.json();
 ---
-
-<ul data-games={JSON.stringify(gamesData)} id="games-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border bg-gradient-to-tr 100  border-gray-300 h-full md:w-[70%] lg:w-[50%]">
-  <template id="Game-item-template">  
-    <GameItem 
+<Layout>
+  
+  <ul data-games={JSON.stringify(gamesData)} id="games-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border bg-gradient-to-tr 100  border-gray-300 h-full md:w-[70%] lg:w-[50%]">
+    <template id="Game-item-template">  
+      <GameItem 
       name="Elden ring"
       quanty="3"
       id={0}
       description="Descripcion del juego"
       url="https://example.com/image.jpg"
-    />
-  </template>
-  {gamesData.map(Game => (
-    <GameItem 
+      />
+    </template>
+    {gamesData.map(Game => (
+      <GameItem 
       name={Game.name} 
       quanty={Game.quanty} 
       id={Game.id}
       description={Game.description}
       url={Game.url}
-    />
-  ))}
+      />
+    ))}
 </ul>
+</Layout>
 
 <script>
   // @ts-nocheck
@@ -115,3 +118,15 @@ const gamesData = await response.json();
     }
   });
 </script>
+
+<style>
+	html,
+.nintendo {
+	background-image: url('../../assets/multimedia/playstation/bg.jpg');
+	background-size: cover; /* para que la imagen cubra todo el fondo */
+	background-position: center center; /*para centrar la imagen */
+	background-repeat: no-repeat; 
+	height: 100vh; /* altura completa de la ventana */
+	margin: 0;
+}
+</style>

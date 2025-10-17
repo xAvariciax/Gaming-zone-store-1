@@ -260,7 +260,7 @@ form.addEventListener("submit", async (e) => {
     return;
 
   try {
-    await ProductsModule.addProduct({
+    await gamesModule.addGames({
       name: inputName.value,
       price: parseInt(inputPrice.value),
       // Datos nuevos a enviar

@@ -204,14 +204,14 @@ const updateGame = async (gameToUpdate) => {
 };
 
 
-  
-export default gamesModule ={
-  addGames,
-  renderGames,
-  saveGamesInBrowser,
-  getGamesFromBrowser,
-  removeGame,
-  updateGame,
-  editIcon,
-  editingIcon
+const gamesModule = {
+addGames,
+renderGames,
+saveGamesInBrowser,
+getGamesFromBrowser,
+removeGame,
+updateGame,
+editIcon,
+editingIcon
 }
+export default gamesModule;

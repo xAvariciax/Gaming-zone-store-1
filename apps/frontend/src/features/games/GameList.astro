@@ -9,7 +9,7 @@ const gamesData = await response.json();
   <template id="Game-item-template">  
     <GameItem 
       name="Elden ring"
-      quanty="3"
+      quantity="3"
       id={0}
       description="Descripcion del juego"
       url="https://example.com/image.jpg"
@@ -18,7 +18,7 @@ const gamesData = await response.json();
   {gamesData.map(Game => (
     <GameItem 
       name={Game.name} 
-      quanty={Game.quanty} 
+      quantity={Game.quantity} 
       id={Game.id}
       description={Game.description}
       url={Game.url}
@@ -41,13 +41,13 @@ const gamesData = await response.json();
       const GameItem = GameItemTemplate.content.cloneNode(true).children[0];
       // Seleccionamos los inputs a reemplazar
       const inputName = GameItem.children[0].children[0];
-      const inputQuanty = GameItem.children[0].children[1];
+      const inputQuantity = GameItem.children[0].children[1];
       const inputDescription = GameItem.children[0].children[2];
       const inputImage = GameItem.children[0].children[3];
       // Editamos el li
       GameItem.id = Game.id;
       inputName.value = Game.name;
-      inputQuanty.value = Game.phone;
+      inputQuantity.value = Game.phone;
       inputDescription.value = Game.description;
       inputImage.src = Game.url;
       // Adjuntamos el nuevo li a la lista      
@@ -72,7 +72,7 @@ const gamesData = await response.json();
       const status = li.dataset.status;
       // 3. Obtener los inputs
       const GameInputName = li.children[0].children[0];
-      const GameInputQuanty = li.children[0].children[1];
+      const GameInputQuantity = li.children[0].children[1];
       const GameInputDescription = li.children[0].children[2];
       const GameInputImage = li.children[0].children[3];
       // 4. Obtener el boton
@@ -80,7 +80,7 @@ const gamesData = await response.json();
       if (status === 'inputs-deshabilitados') {
         // 1. Remover el readonly (No se puede editar) de los inputs.
         GameInputName.removeAttribute('readonly');
-        GameInputQuanty.removeAttribute('readonly');
+        GameInputQuantity.removeAttribute('readonly');
         GameInputDescription.removeAttribute('readonly');
         GameInputImage.removeAttribute('readonly');
         // 2. Cambiar el status a inputs-habilitados
@@ -94,7 +94,7 @@ const gamesData = await response.json();
       if (status === 'inputs-habilitados') {
         // 1. Agegar el readonly (No se puede editar) de los inputs.
         GameInputName.setAttribute('readonly', true);
-        GameInputQuanty.setAttribute('readonly', true);
+        GameInputQuantity.setAttribute('readonly', true);
         GameInputDescription.setAttribute('readonly', true);
         GameInputImage.setAttribute('readonly', true);
         // 2. Cambiar el status a inputs-deshabilitados
@@ -106,7 +106,7 @@ const gamesData = await response.json();
         const GameToUpdate = {
           id: li.id,
           name: GameInputName.value,
-          quanty: GameInputQuanty.value,
+          quantity: GameInputQuantity.value,
           description: GameInputDescription.value,
           url: GameInputImage.value
         }
