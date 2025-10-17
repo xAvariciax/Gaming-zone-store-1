@@ -13,6 +13,7 @@ const gamesData = await response.json();
       id={0}
       description="Descripcion del juego"
       url="https://example.com/image.jpg"
+      price="59.99"
     />
   </template>
   {gamesData.map(Game => (
@@ -22,6 +23,7 @@ const gamesData = await response.json();
       id={Game.id}
       description={Game.description}
       url={Game.url}
+      price={Game.price}
     />
   ))}
 </ul>

@@ -11,19 +11,21 @@ const gamesData = await response.json();
     <template id="Game-item-template">  
       <GameItem 
       name="Elden ring"
-      quanty="3"
+      quantity="3"
       id={0}
       description="Descripcion del juego"
       url="https://example.com/image.jpg"
+      price="59.99"
       />
     </template>
     {gamesData.map(Game => (
       <GameItem 
       name={Game.name} 
-      quanty={Game.quanty} 
+      quantity={Game.quantity} 
       id={Game.id}
       description={Game.description}
       url={Game.url}
+      price={Game.price}
       />
     ))}
 </ul>
