@@ -15,8 +15,9 @@ const BASE_URL = `${BACK_ENDPOINT}/api/games`;
  * 
  */
 /** 
- * @type {Games[]} */
-let Games = [];
+ * @type {import('nanostores').WritableAtom<Games[]>}
+ */
+export const games = atom([]);
 
 /**
  * Agrega un Game al array de Games
@@ -24,18 +25,29 @@ let Games = [];
  */
 const addGames = async (newGames) => {
   try {
-    const GamesCreated = await ky.post(BASE_URL, {json: newGames, credentials: 'include'}).json();
-    Games.set(Games.get().concat(GamesCreated));
-    gamesFiltered.set(GamesFiltered.get().concat(GamesCreated));
+    const gamesCreated = await ky.post(BASE_URL, {json: newGames, credentials: 'include'}).json();
+    // 2. Actualiza el store 'games' con el nuevo juego
+    games.set([...games.get(), gamesCreated]); 
+    // gamesFiltered.set(gamesFiltered.get().concat(gamesCreated)); // Esto fallará si gamesFiltered no está definido aquí
     createNotification({title: 'Game creado!',type: 'success'});
   } catch (error) {
     console.log(error);
-    const errorData = await error.response.json();
-    createNotification({
-      title: 'Ups! Hubo un error',
-      description: errorData.error,
-      type: 'error'
-    });
+    // 3. Maneja el error de forma segura
+    if (error.response) {
+      const errorData = await error.response.json();
+      const description = errorData.errors ? errorData.errors.map(e => e.message).join(', ') : 'Error desconocido';
+      createNotification({
+        title: 'Ups! Hubo un error',
+        description: description,
+        type: 'error'
+      });
+    } else {
+      createNotification({
+        title: 'Ups! Hubo un error',
+        description: error.message,
+        type: 'error'
+      });
+    }
   }
 }
 
@@ -61,12 +73,12 @@ const editingIcon = `
  * Renderiza los Games
  */
 const renderGames = (list) => {
-	// Borrar la lista del html
-	list.innerHTML = '';
+    // Borrar la lista del html
+    list.innerHTML = '';
     // 1. Por cada Gameo del array, creo y agrego el  Gameo al HTML
-    Games.forEach(Games => {
+    games.get().forEach(Game => { // Usa games.get() para obtener el array
         // console.log(game);
-        
+
         // 1. Crear el li
         const li = document.createElement('li');
 
@@ -123,7 +135,7 @@ const renderGames = (list) => {
  * Guarda el array de los Games en el navegador
  */
 const saveGamesInBrowser = () => {
-  localStorage.setItem('Games', JSON.stringify(Games));
+  localStorage.setItem('Games', JSON.stringify(games.get())); // Usa games.get()
 }
 
 /**
@@ -131,11 +143,13 @@ const saveGamesInBrowser = () => {
  */
 const getGamesFromBrowser = () => {
   // 1. Obtener la lista de localStorage
-	const GamesLocalJson = localStorage.getItem('Games');
-	// 2.Transformar de JSON a JavaScript
-	const GamesLocal = JSON.parse(GamesLocalJson);
-	// 3. Guardar los Games
-	Games = GamesLocal ?? [];
+    const GamesLocalJson = localStorage.getItem('Games');
+    // 2.Transformar de JSON a JavaScript
+    const GamesLocal = JSON.parse(GamesLocalJson);
+    // 3. Guardar los Games
+    if (GamesLocal) {
+    games.set(GamesLocal); // Usa games.set()
+  }
 }
 
 /**
@@ -147,7 +161,6 @@ const removeGame = async (id) => {
   try {
     const gameDeleted = await ky.delete(url, { credentials: 'include'}).json();
     games.set(games.get().filter(game => game.id != gameDeleted.id));
-    gamesFiltered.set(gamesFiltered.get().filter(game => game.id != gameDeleted.id));
     createNotification({
       title: 'gameo eliminado!',
       description: `${gameDeleted.name}`,
@@ -180,13 +193,6 @@ const updateGame = async (gameToUpdate) => {
         return game;
       }
     }));
-    gamesFiltered.set(gamesFiltered.get().map(game => {
-      if (game.id == gameUpdated.id) { 
-        return gameUpdated;
-      } else {
-        return game;
-      }
-    }));
     createNotification({
       title: 'game actualizado!',
       description: `${gameUpdated.name}`,
@@ -204,14 +210,14 @@ const updateGame = async (gameToUpdate) => {
 };
 
 
-const gamesModule = {
-addGames,
-renderGames,
-saveGamesInBrowser,
-getGamesFromBrowser,
-removeGame,
-updateGame,
-editIcon,
-editingIcon
+  
+export default {
+  addGames,
+  renderGames,
+  saveGamesInBrowser,
+  getGamesFromBrowser,
+  removeGame,
+  updateGame,
+  editIcon,
+  editingIcon,
 }
-export default gamesModule;

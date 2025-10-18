@@ -133,7 +133,9 @@ class="bg-white p-6 rounded-md flex flex-col gap-4 border border-gray-300 md:w-[
 
 <script>
   // @ts-nocheck
-import gamesModule from "./Games.module.js";
+  // @ts-nocheck
+import GamesModule from "./Games.module.js";
+import { createNotification } from "../notifications/notificiation.js";
 const inputName = document.querySelector("#name-input");
 const inputPrice = document.querySelector("#price-input");
 const inputImageUrl = document.querySelector("#image-url-input");
@@ -260,14 +262,13 @@ form.addEventListener("submit", async (e) => {
     return;
 
   try {
-    await gamesModule.addGames({
+    await GamesModule.addGames({
       name: inputName.value,
       price: parseInt(inputPrice.value),
-      // Datos nuevos a enviar
-      imageUrl: inputImageUrl.value,
-      consoleType: selectConsole.value,
+      url: inputImageUrl.value,
       description: textareaDescription.value,
-      quantity: parseInt(inputQuantity.value),
+      quantity: parseInt(inputQuantity.value), 
+      console: selectConsole.value,
     });
 
     modalFondo.classList.add("hidden");
@@ -289,15 +290,9 @@ form.addEventListener("submit", async (e) => {
     renderValidation(textareaDescription, descriptionValidation);
     renderValidation(inputQuantity, quantityValidation);
   } catch (error) {
-    console.log(error);
-    let description = "Error desconocido";
-    if (error.response) {
-      const errorData = await error.response.json();
-      description = errorData.error;
-    }
     createNotification({
       title: "Ups! Hubo un error",
-      description,
+      description: error.message,
       type: "error",
     });
   }
@@ -315,7 +310,6 @@ cerrarModalBtn.addEventListener("click", () => {
   renderButtonState();
   renderValidation(inputName, nameValidation);
   renderValidation(inputPrice, priceValidation);
-  // Reiniciamos la validación visual para los nuevos campos
   renderValidation(inputImageUrl, imageUrlValidation);
   renderValidation(selectConsole, consoleValidation);
   renderValidation(textareaDescription, descriptionValidation);
