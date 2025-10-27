@@ -1,0 +1,50 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+
+<!-- lista de consolas -->
+<Layout>
+  <main>
+    <main class="w-full flex flex-col items-center p-4 md:p-10">
+    <h1 class="text-black text-4xl font-extrabold text-center bg-#f0f4f83b border-4 border-black p-4 md:text-5xl lg:text-6xl">
+        Consolas
+    </h1>
+
+    <ul id= "consoles"class="w-full flex flex-wrap justify-center gap-4 mt-6 md:gap-8 lg:gap-12">
+        <li class="bg-gray-100 p-3 rounded-lg shadow-md transition-all duration-300 hover:bg-gray-200">
+            <a href="/consoles/pc" class="text-lg font-semibold text-gray-800 hover:text-blue-600 md:text-xl lg:text-2xl">
+                PC
+            </a>
+        </li>
+        <li class="bg-gray-100 p-3 rounded-lg shadow-md transition-all duration-300 hover:bg-gray-200">
+            <a href="/consoles/playstation" class="text-lg font-semibold text-gray-800 hover:text-blue-600 md:text-xl lg:text-2xl">
+                PlayStation
+            </a>
+        </li>
+        <li class="bg-gray-100 p-3 rounded-lg shadow-md transition-all duration-300 hover:bg-gray-200">
+            <a href="/consoles/xbox" class="text-lg font-semibold text-gray-800 hover:text-blue-600 md:text-xl lg:text-2xl">
+                Xbox
+            </a>
+        </li>
+        <li class="bg-gray-100 p-3 rounded-lg shadow-md transition-all duration-300 hover:bg-gray-200">
+            <a href="/consoles/nintendo" class="text-lg font-semibold text-gray-800 hover:text-blue-600 md:text-xl lg:text-2xl">
+                Nintendo
+            </a>
+        </li>
+    </ul>
+</main>
+  </main>
+</Layout>
+
+<style>
+  #consoles, h1 {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f0f4f83b;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	color: white;
+  }
+</style>

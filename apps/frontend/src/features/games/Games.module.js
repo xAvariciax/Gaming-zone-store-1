@@ -162,7 +162,7 @@ const removeGame = async (id) => {
     const gameDeleted = await ky.delete(url, { credentials: 'include'}).json();
     games.set(games.get().filter(game => game.id != gameDeleted.id));
     createNotification({
-      title: 'gameo eliminado!',
+      title: 'game eliminado!',
       description: `${gameDeleted.name}`,
       type: 'success'
     });

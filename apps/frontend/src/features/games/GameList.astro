@@ -31,7 +31,7 @@ const gamesData = await response.json();
 <script>
   // @ts-nocheck
   import gamesModule from "./games.module.js"; 
-  import { games } from "../../pages/games.astro";
+  import { games } from "../../pages/admin/games.astro";
   const gamesList = document.querySelector('#games-list');
   const GameItemTemplate = document.querySelector('#Game-item-template');
   games.set(JSON.parse(gamesList.dataset.games));
@@ -79,6 +79,7 @@ const gamesData = await response.json();
       const GameInputImage = li.children[0].children[3];
       // 4. Obtener el boton
       const GameEditBtn = li.children[1].children[0];
+      
       if (status === 'inputs-deshabilitados') {
         // 1. Remover el readonly (No se puede editar) de los inputs.
         GameInputName.removeAttribute('readonly');
