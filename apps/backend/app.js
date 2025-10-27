@@ -14,7 +14,7 @@ import loginRouter from './src/modules/login/login.routes.js';
 import ordersRouter from './src/modules/cart/order/order.routes.js';
 import orderProductsRouter from './src/modules/cart/orderProducts/orderProducts.routes.js';
 import path from 'path';
-import {handler as ssrHandler} from './dist/server/entry.mjs'
+import { handler as ssrHandler } from './dist/server/entry.mjs';
 
 const app = express();
 

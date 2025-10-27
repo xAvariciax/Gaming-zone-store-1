@@ -1,8 +1,8 @@
 import { renderers } from './renderers.mjs';
-import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_B0Fd6ZAm.mjs';
+import { c, s } from './chunks/_@astrojs-ssr-adapter_B0Fd6ZAm.mjs';
 import { manifest } from './manifest_BU9Hqslq.mjs';
 
-const serverIslandMap = new Map();;
+const serverIslandMap = new Map();
 
 const _page0 = () => import('./pages/_image.astro.mjs');
 const _page1 = () => import('./pages/admin/games.astro.mjs');
@@ -57,13 +57,13 @@ const _args = {
     "assets": "_astro",
     "experimentalStaticHeaders": false
 };
-const _exports = createExports(_manifest, _args);
+const _exports = c(_manifest, _args);
 const handler = _exports['handler'];
 const startServer = _exports['startServer'];
 const options = _exports['options'];
 const _start = 'start';
-if (Object.prototype.hasOwnProperty.call(serverEntrypointModule, _start)) {
-	serverEntrypointModule[_start](_manifest, _args);
+if (Object.prototype.hasOwnProperty.call(s, _start)) {
+	s[_start](_manifest, _args);
 }
 
-export { handler, options, pageMap, startServer };
+export { handler, options, pageMap, startServer,  };
