@@ -14,7 +14,7 @@ import loginRouter from './src/modules/login/login.routes.js';
 import ordersRouter from './src/modules/cart/order/order.routes.js';
 import orderProductsRouter from './src/modules/cart/orderProducts/orderProducts.routes.js';
 import path from 'path';
-// import {handler as ssrHandler} from './dist/server/entry.mjs'
+import {handler as ssrHandler} from './dist/server/entry.mjs'
 
 const app = express();
 
@@ -30,7 +30,7 @@ app.use('/api/paymentMethods', authenticateUser, paymentMethodsRouter);
 app.use('/api/cart/order', authenticateUser, ordersRouter);
 app.use('/api/cart/orderProducts', orderProductsRouter);
 app.use('/', express.static(path.join(import.meta.dirname, 'dist', 'client')));
-// app.use(ssrHandler);
+app.use(ssrHandler);
 
 app.use((err, req, res, _next) => {
   console.log(err);
