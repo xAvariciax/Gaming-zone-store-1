@@ -1,19 +1,19 @@
 ---
 import { Icon } from "astro-icon/components";
 const { game, quantity, } = Astro.props;
+ // **Nueva Verificación Defensiva**
+if (!game) {
+  // Si 'game' es undefined o null, deja de renderizar para evitar el fallo.
+  console.error("El componente CartItem recibió una propiedad 'game' indefinida.");
+  return null; // Retorna nulo para no renderizar el resto del componente
+}
 ---
+
 
 <div
   class="cart-item flex items-center justify-between gap-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm"
-  data-product-id={game.id}
+  data-game-id={game.id}
 >
-  <!-- <div class="flex-shrink-0">
-    <img
-      src="/placeholder-image.jpg"
-      alt={product.name}
-      class="w-20 h-20 object-cover rounded-md"
-    />
-  </div> -->
 
   <div class="flex-grow min-w-0">
     <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 truncate">
@@ -52,3 +52,5 @@ const { game, quantity, } = Astro.props;
     </button>
   </div>
 </div>
+<script>  
+</script>

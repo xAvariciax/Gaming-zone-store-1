@@ -41,6 +41,14 @@ export const getLinks = (pathname) => {
         location.replace('/carrito');
       }
     });
+    links.push({ 
+      text: 'consolas',
+      path: '/consoles', 
+      handler: async () => {
+        await AuthModule.getLoggedUser();
+        location.replace('/consoles');
+      }
+    });
   }
 
   if (pathname === '/login') {
