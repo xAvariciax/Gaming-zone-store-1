@@ -14,8 +14,11 @@ paymentMethodsRouter.get('/', async (req, res) => {
 });
 
 paymentMethodsRouter.post('/', async (req, res) => {
+  console.log(1);
   const body = createPaymentMethodsRouteSchema.body.parse(req.body);
+  console.log(2);
   const newPaymentMethod = await paymentMethodsRepository.addOne(body);
+  console.log(3);
   res.json(newPaymentMethod);
 });
 
@@ -25,7 +28,7 @@ paymentMethodsRouter.delete('/:id', async (req, res) => {
   const paymentMethodDeleted = await paymentMethodsRepository.deleteOneById({
     paymentMethodId: params.id,
   });
-  console.log('PRODUCTO ELIMINADO', paymentMethodDeleted);
+  console.log('METODO DE PAGO ELIMINADO', paymentMethodDeleted);
 
   res.json(paymentMethodDeleted);
 });

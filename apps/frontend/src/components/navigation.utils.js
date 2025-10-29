@@ -16,7 +16,7 @@ import AuthModule from "../features/auth/auth.module.js";
 export const getLinks = (pathname) => {
   /** @type {Link[]} */
   let links = [];
-  if (pathname === '/admin' || pathname === '/consoles') {
+  if (pathname === '/adminhola' || pathname === '/consoles' || pathname === '/carrito') {
     links.push({ 
       text: 'Cerrar sesion',
       path: '/', 
@@ -27,10 +27,10 @@ export const getLinks = (pathname) => {
     });
     links.push({
       text: 'admin',
-      path: '/admin',
+      path: './adminhola',
       handler: async () => {
         await AuthModule.getLoggedUser();
-        location.replace('/admin');
+        location.replace('/adminhola');
       }
     });
     links.push({ 

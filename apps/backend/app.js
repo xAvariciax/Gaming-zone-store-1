@@ -26,7 +26,7 @@ app.use('/api/games', gamesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/paymentMethods', authenticateUser, paymentMethodsRouter);
+app.use('/api/paymentMethods', paymentMethodsRouter);
 app.use('/api/cart/order', authenticateUser, ordersRouter);
 app.use('/api/cart/orderProducts', orderProductsRouter);
 app.use('/', express.static(path.join(import.meta.dirname, 'dist', 'client')));
