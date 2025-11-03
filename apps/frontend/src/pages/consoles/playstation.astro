@@ -1,55 +1,56 @@
 ---
 import { BACK_ENDPOINT } from "../../config/endpoints";
-import Layout from "../../layouts/Layout.astro"
+import Layout from "../../layouts/Layout.astro"; 
 import GameItem from "../../features/games/GameItem.astro";
+
 const response = await fetch(`${BACK_ENDPOINT}/api/games`);
 const gamesData = await response.json();
 ---
-<Layout>
-  <main class="playstation">
+<Layout> 
 
-    <ul data-games={JSON.stringify(gamesData)} id="games-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border bg-gradient-to-tr 100  border-gray-300 h-full md:w-[70%] lg:w-[50%]">
-      <template id="Game-item-template">  
-        <GameItem 
-        name="Elden ring"
-        quantity="3"
-        id={0}
-        description="Descripcion del juego"
-        url="https://example.com/image.jpg"
-        price="59.99"
-        />
-      </template>
-      {gamesData.map(Game => (
-        <GameItem 
-        name={Game.name} 
-        quantity={Game.quantity} 
-        id={Game.id}
-        description={Game.description}
-        url={Game.url}
-        price={Game.price}
-        />
-      ))}
-</ul>
-</main>
+ <main class="playstation">
+ <ul data-games={JSON.stringify(gamesData)} id="games-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border bg-gradient-to-tr 100 border-gray-300 h-full md:w-[70%] lg:w-[50%]">
+<template id="Game-item-template"> 
+<GameItem 
+name="Elden ring"
+quantity="3"
+id={0}
+description="Descripcion del juego"
+url="https://example.com/image.jpg"
+ price="59.99"
+    />
+   </template>
+   {gamesData.map(Game => (
+    <GameItem 
+    name={Game.name} 
+    quantity={Game.quantity} 
+    id={Game.id}
+    description={Game.description}
+    url={Game.url}
+    price={Game.price}
+    />
+   ))}
+    </ul>
+  </main>
+
 </Layout>
 
 <script>
-  // @ts-nocheck
-  import gamesModule from "../../features/games/games.module.js"; 
-  import { games } from "../admin/games.astro";
-  import AuthModule from "../../features/auth/auth.module";
-
-  
+ // @ts-nocheck
+ import gamesModule from "../../features/games/games.module.js"; 
+ import { games } from "../../features/games/Games.module.js";
+ import AuthModule from "../../features/auth/auth.module";
+ 
 </script>
 
 <style>
-	html,
+ html,
 .playstation {
-	background-image: url('../../assets/multimedia/playstation/bg.jpg');
-	background-size: cover; /* para que la imagen cubra todo el fondo */
-	background-position: center center; /*para centrar la imagen */
-	background-repeat: no-repeat; 
-	height: 100vh; /* altura completa de la ventana */
-	margin: 0;
+ background-image: url('../../assets/multimedia/playstation/bg.jpg');
+ background-size: cover; 
+ background-position: center center; 
+ background-repeat: no-repeat; 
+ height: 100vh; 
+ margin: 0;
 }
 </style>

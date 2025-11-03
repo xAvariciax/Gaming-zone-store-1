@@ -1,9 +1,11 @@
-PUT  http://localhost:3000/consoles/playstation
+PUT  http://localhost:3000/api/games/26
 Content-Type: application/json
 {
-  "name": "Elden Ring",
-  "quanty": "3",
-  "description": "An action RPG game developed by FromSoftware and published by Bandai Namco Entertainment.",
-  "url": "https://example.com/eldenring.jpg",
-  "price": 19.99,
+ "name": "elden ring",
+ "description": "An epic fantasy action-RPG.",
+ "quantity": 3,
+ "url": "https://example.com/eldenring.jpg",
+ "price": 90,
+ "console": "playstation",
+ "id": 28
 }

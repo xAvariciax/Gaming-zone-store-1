@@ -3,11 +3,11 @@ import CartItem from "./CartItem.astro";
 ---
 
 <ul
-  id="products-cart-list"
+  id="games-cart-list"
   class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border border-gray-300 h-full md:w-[70%] lg:w-[50%]"
 >
-  <template id="product-cart-item-template">
-    <CartItem product={{ id: 0, name: "", price: 0 }} quantity={0} />
+  <template id="game-cart-item-template">
+    <CartItem game={{ id: 0, name: "", price: 0 }} quantity={0} />
   </template>
   <p id="empty-cart-message" class="text-center text-gray-500 hidden">
     Aún no has agregado productos a tu carrito.
@@ -19,14 +19,14 @@ import CartItem from "./CartItem.astro";
   import cartService from "./cart.module.js";
   import { cart } from "./cart.module.js";
   import { createNotification } from "../../notifications/notificiation";
-  const productsCartList = document.querySelector("#products-cart-list");
-  const productCartItemTemplate = document.querySelector(
-    "#product-cart-item-template"
+  const gamesCartList = document.querySelector("#games-cart-list");
+  const gameCartItemTemplate = document.querySelector(
+    "#game-cart-item-template"
   );
   const emptyCartMessage = document.querySelector("#empty-cart-message");
 
   const renderCart = (cartItems) => {
-    productsCartList.innerHTML = "";
+    gamesCartList.innerHTML = "";
 
     if (cartItems.length === 0) {
       emptyCartMessage.classList.remove("hidden");
@@ -35,37 +35,37 @@ import CartItem from "./CartItem.astro";
     emptyCartMessage.classList.add("hidden");
 
     for (const cartItem of cartItems) {
-      const productItem = productCartItemTemplate.content.cloneNode(true);
+      const gameItem = gameCartItemTemplate.content.cloneNode(true);
 
-      const cartItemElement = productItem.querySelector(".cart-item");
-      const quantitySpan = productItem.querySelector(".quantity");
-      const decreaseBtn = productItem.querySelector(".decrease-quantity-btn");
-      const increaseBtn = productItem.querySelector(".increase-quantity-btn");
-      const removeBtn = productItem.querySelector(".remove-item-btn");
+      const cartItemElement = gameItem.querySelector(".cart-item");
+      const quantitySpan = gameItem.querySelector(".quantity");
+      const decreaseBtn = gameItem.querySelector(".decrease-quantity-btn");
+      const increaseBtn = gameItem.querySelector(".increase-quantity-btn");
+      const removeBtn = gameItem.querySelector(".remove-item-btn");
 
-      cartItemElement.dataset.productId = cartItem.productId;
-      productItem.querySelector("h3").textContent = cartItem.name;
-      productItem.querySelector("p").textContent =
+      cartItemElement.dataset.gameId = cartItem.gameId;
+      gameItem.querySelector("h3").textContent = cartItem.name;
+      gameItem.querySelector("p").textContent =
         `$${cartItem.price.toFixed(2)}`;
       quantitySpan.textContent = cartItem.quantity;
 
       decreaseBtn.addEventListener("click", () => {
-        cartService.updateProductQuantityInLocalStorage({
-          productId: cartItem.productId,
+        cartService.updateGameQuantityInLocalStorage({
+          gameId: cartItem.gameId,
           newQuantity: cartItem.quantity - 1,
         });
       });
 
       increaseBtn.addEventListener("click", () => {
-        cartService.updateProductQuantityInLocalStorage({
-          productId: cartItem.productId,
+        cartService.updateGameQuantityInLocalStorage({
+          gameId: cartItem.gameId,
           newQuantity: cartItem.quantity + 1,
         });
       });
 
       removeBtn.addEventListener("click", () => {
-        cartService.removeProductFromLocalStorage({
-          productId: cartItem.productId,
+        cartService.removeGameFromLocalStorage({
+          gameId: cartItem.gameId,
         });
         createNotification({
           title: "Juego Eliminado",
@@ -75,7 +75,7 @@ import CartItem from "./CartItem.astro";
       });
 
       // Agregamos el item a la lista
-      productsCartList.appendChild(productItem);
+      gamesCartList.appendChild(gameItem);
     }
   };
 

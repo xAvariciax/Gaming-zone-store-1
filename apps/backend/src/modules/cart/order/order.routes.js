@@ -14,8 +14,6 @@ const ordersRouter = express.Router();
 //   const orders = await orderRepository.getAll(body);
 //   res.json(orders);
 // });
-
-// GET /api/orders/user/:userId - Ruta para que un cliente vea sus pedidos
 ordersRouter.get('/user/:userId', async (req, res) => {
   const params = userOrdersRouteSchema.params.parse(req.params);
   const orders = await orderRepository.getByUserId(params.userId);
@@ -24,6 +22,9 @@ ordersRouter.get('/user/:userId', async (req, res) => {
 
 // GET /api/orders/pending - Ruta para que el "admin" vea los pagos por revisar
 ordersRouter.get('/pending', async (req, res) => {
+  if (!req.user || req.user?.is_admin) {
+    return res.status(403).json({ error: 'Acceso no autorizado' });
+  }
   const pendingOrders = await orderRepository.getByPaymentStatus('pendiente');
   res.json(pendingOrders);
 });

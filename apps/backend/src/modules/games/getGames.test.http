@@ -1,1 +1,1 @@
-GET  http://localhost:3000/consoles/playstation
+GET  http://localhost:3000/api/games

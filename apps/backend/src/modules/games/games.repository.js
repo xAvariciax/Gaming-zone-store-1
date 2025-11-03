@@ -1,3 +1,4 @@
+// import { number } from 'zod';
 import db from '../../db/index.js';
 import { ErrorWithStatus } from '../../utils/errorTypes.js';
 
@@ -12,12 +13,14 @@ const addOne = async (payload) => {
     INSERT INTO games (name, description, quantity, url, price, console)
     VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
   `,
-    [payload.name,
-       payload.description,
-        payload.quantity,
-         payload.url,
-          payload.price,
-           payload.console],
+    [
+      payload.name,
+      payload.description,
+      payload.quantity,
+      payload.url,
+      payload.price,
+      payload.console,
+    ],
   );
   return response.rows[0];
 };
@@ -40,11 +43,19 @@ const updateOneById = async (id, payload) => {
   const response = await db.query(
     `
     UPDATE games
-    SET name = $1, quantity = $2
-    WHERE id = $3
+    SET name = $1, quantity = $2, console = $3, price = $4, url = $5, description = $6
+    WHERE id = $7 
     RETURNING *
   `,
-    [payload.name, payload.quantity, id],
+    [
+      payload.name,
+      payload.quantity,
+      payload.console,
+      payload.price,
+      payload.url,
+      payload.description,
+      id,
+    ],
   );
   if (response.rowCount === 0) {
     throw new ErrorWithStatus(404, 'El Juego fue no encontrado');

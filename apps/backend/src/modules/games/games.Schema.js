@@ -9,7 +9,11 @@ export const gamesSchema = z.object({
   quantity: z.number(),
   description: z.string(),
   url: z.string(),
-  price: z.number(),
+  price: z
+    .number()
+    .int()
+    .positive('El precio debe ser un número entero positivo.')
+    .min(1, 'El precio debe ser mayor a cero.'),
   console: z.string(),
 });
 

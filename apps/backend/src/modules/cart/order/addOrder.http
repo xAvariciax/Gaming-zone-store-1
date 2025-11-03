@@ -1,8 +1,7 @@
 POST  http://localhost:3000/api/cart/order
 Content-Type: application/json
 {
-  "payment_method_id": 2,
   "payment_reference": "5678",
-  "monto": 200.50,
-  "user_id": 3
+  "monto": 200,
+  "user_id": 1
 }

@@ -77,11 +77,11 @@ import Layout from "../../layouts/Layout.astro";
 <script>
   // @ts-nocheck
   import { cart } from "../../features/cart/components/cart.module.js";
-  import { createNotification } from "../../features/notifications/notification.js";
+  import { createNotification } from "../../features/notifications/notificiation.js";
   import paymentMethodsModule, {
     paymentMethods,
   } from "../../components/paymentMethods/paymentMethods.module.js";
-  import { createOrderWithProducts } from "../../features/orders/orders.module.js";
+  import { createOrderWithGames } from "../../features/orders/orders.module.js";
   const paymentForm = document.querySelector("#payment-form");
   const paymentMethodSelect = document.querySelector("#payment-method");
   const montoInput = document.querySelector("#monto");
@@ -137,7 +137,7 @@ import Layout from "../../layouts/Layout.astro";
 
     try {
       // Llamamos a la función del módulo para manejar todo el proceso
-      const orderId = await createOrderWithProducts(orderPayload);
+      const orderId = await createOrderWithGames(orderPayload);
       console.log("Order created with ID:", orderId);
 
       // Si todo sale bien, muestra una notificación y limpia el carrito

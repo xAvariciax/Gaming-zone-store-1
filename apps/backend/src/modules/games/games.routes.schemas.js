@@ -19,7 +19,7 @@ export const deletegamesRouteSchema = {
 };
 
 export const updategamesRouteSchema = {
-  params: z.object({ id: gamesIdSchema }),
+  params: z.object({}),
   body: gamesSchema.omit({ id: true }),
   queries: z.object({}),
 };

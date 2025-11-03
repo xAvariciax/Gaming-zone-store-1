@@ -5,5 +5,5 @@ export const userSchema = z.object({
   email: z.email(),
   passwordHash: z.string(),
   verify_email: z.boolean().optional(),
-  Administrator: z.boolean(),
+  is_admin: z.boolean().optional(),
 });

@@ -8,7 +8,7 @@ const BASE_URL = `${BACK_ENDPOINT}/api/games`;
  * @type {object}
  * @property {Number} id El id del juego
  * @property {string} name El nombre del juego
- * @property {Number} quanty El numero del juego
+ * @property {Number} quantity El numero del juego
  * @property {string} description la descripcion del juego
  * @property {string} url la imagen del juego
  * @property {Number} price el precio del juego
@@ -19,6 +19,8 @@ const BASE_URL = `${BACK_ENDPOINT}/api/games`;
  */
 export const games = atom([]);
 
+export const gamesFiltered = atom([]);
+
 /**
  * Agrega un Game al array de Games
  * @param {Games} newGames
@@ -28,7 +30,7 @@ const addGames = async (newGames) => {
     const gamesCreated = await ky.post(BASE_URL, {json: newGames, credentials: 'include'}).json();
     // 2. Actualiza el store 'games' con el nuevo juego
     games.set([...games.get(), gamesCreated]); 
-    // gamesFiltered.set(gamesFiltered.get().concat(gamesCreated)); // Esto fallará si gamesFiltered no está definido aquí
+    gamesFiltered.set(gamesFiltered.get().concat(gamesCreated));
     createNotification({title: 'Game creado!',type: 'success'});
   } catch (error) {
     console.log(error);
@@ -153,7 +155,7 @@ const getGamesFromBrowser = () => {
 }
 
 /**
- * Elimina un Gameo del array de Games
+ * Elimina un Game del array de Games
  * @param {string} id El id del Gameo a eliminar
  */
 const removeGame = async (id) => {
@@ -161,6 +163,7 @@ const removeGame = async (id) => {
   try {
     const gameDeleted = await ky.delete(url, { credentials: 'include'}).json();
     games.set(games.get().filter(game => game.id != gameDeleted.id));
+    gamesFiltered.set(gamesFiltered.get().filter(game => game.id != gameDeleted.id));
     createNotification({
       title: 'game eliminado!',
       description: `${gameDeleted.name}`,
@@ -183,30 +186,55 @@ const removeGame = async (id) => {
  */
 
 const updateGame = async (gameToUpdate) => {
-  const url = `${BASE_URL}/${gameToUpdate.id}`;
-  try {
-    const gameUpdated = await ky.put(url, {json: gameToUpdate, credentials: 'include'}).json();
-    games.set(games.get().map(game => {
-      if (game.id == gameUpdated.id) { 
-        return gameUpdated;
-      } else {
-        return game;
-      }
-    }));
-    createNotification({
-      title: 'game actualizado!',
-      description: `${gameUpdated.name}`,
-      type: 'success'
-    });
-  } catch (error) {
-    console.log(error);
-    const errorData = await error.response.json();
-    createNotification({
-      title: 'Ups! Hubo un error',
-      description: errorData.error,
-      type: 'error'
-    });
+ const url = `${BASE_URL}/${gameToUpdate.id}`;
+ const validatedGame = {
+  ...gameToUpdate,
+  quantity: Number(gameToUpdate.quantity) || 0,
+  price: Number(gameToUpdate.price) || 0,
+  console: String(gameToUpdate.console) || 'Desconocida',
+ };
+ 
+ try {
+  // 💡 Enviamos el objeto con tipos corregidos
+  const gameUpdated = await ky.put(url, {json: validatedGame, credentials: 'include'}).json();
+  
+  // Actualizar stores... (Lógica de Nanostores se mantiene)
+  games.set(games.get().map(game => {
+   if (game.id == gameUpdated.id) { 
+    return gameUpdated;
+   } else {
+    return game;
+   }
+  }));
+  gamesFiltered.set(gamesFiltered.get().map(game => {
+   if (game.id == gameUpdated.id) { 
+    return gameUpdated;} else {
+    return game;
+   }}));
+  createNotification({
+   title: 'Game actualizado!',
+   description: `${gameUpdated.name}`,
+   type: 'success'
+  });
+ } catch (error) {
+  console.log(error);
+  // Manejo de error mejorado para capturar el detalle de Zod
+  if (error.response) {
+   const errorData = await error.response.json();
+   const description = errorData.errors ? errorData.errors.map(e => e.message).join(', ') : (errorData.error || 'Error desconocido');
+   createNotification({
+    title: 'Ups! Hubo un error de validación',
+    description: description,
+    type: 'error'
+   });
+  } else {
+   createNotification({
+    title: 'Ups! Hubo un error de red',
+    description: error.message,
+    type: 'error'
+   });
   }
+ }
 };
 
 

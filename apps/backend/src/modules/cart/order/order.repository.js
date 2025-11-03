@@ -9,10 +9,10 @@ const getAll = async () => {
 const addOne = async (payload) => {
   const response = await db.query(
     `
-    INSERT INTO user_order (date, status, payment_method_id, user_id, payment_reference, monto)
-    VALUES (NOW(), 'preparacion', $1, $2, $3, $4) RETURNING *
+    INSERT INTO user_order (date, status, user_id, payment_reference, monto)
+    VALUES (NOW(), 'preparacion', $1, $2, $3) RETURNING *
   `,
-    [payload.payment_method_id, payload.user_id, payload.payment_reference, payload.monto],
+    [payload.user_id, payload.payment_reference, payload.monto],
   );
   return response.rows[0];
 };
@@ -31,21 +31,20 @@ const deleteOneById = async (payload) => {
   return response.rows[0];
 };
 
-// const updateOneById = async (id, payload) => {
-//   const response = await db.query(
-//     `
-//     UPDATE user_order
-//     SET status = $1
-//     WHERE id = $2 AND user_id = $3
-//     RETURNING *
-//   `,
-//     [payload.status, id, payload.userId],
-//   );
-//   if (response.rowCount === 0) {
-//     throw new ErrorWithStatus(404, 'La orden no fue encontrada');
-//   }
-//   return response.rows[0];
-// };
+const updateOneById = async (id, payload) => {
+  const response = await db.query(
+    `
+     UPDATE user_order
+     SET status = $1
+     WHERE id = $2 AND user_id = $3     RETURNING *
+   `,
+    [payload.status, id, payload.userId],
+  );
+  if (response.rowCount === 0) {
+    throw new ErrorWithStatus(404, 'La orden no fue encontrada');
+  }
+  return response.rows[0];
+};
 
 const getByPaymentStatus = async (status) => {
   const response = await db.query(
@@ -107,7 +106,8 @@ const getByUserId = async (userId) => {
 const orderRepository = {
   getAll,
   addOne,
-  deleteOneById, //updateOneById
+  deleteOneById,
+  updateOneById,
   getByPaymentStatus,
   updatePaymentStatus,
   getByUserId,

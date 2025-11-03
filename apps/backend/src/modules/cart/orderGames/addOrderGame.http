@@ -1,0 +1,8 @@
+POST http://localhost:3000/api/cart/orderGames/3
+Content-Type: application/json
+
+{
+  "gameId": 1,
+  "quantity": 2,
+  "orderId": 3
+}

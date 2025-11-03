@@ -1,17 +1,13 @@
 import db from '../../db/index.js';
 import { ErrorWithStatus } from '../../utils/errorTypes.js';
 
-// const user.isAdmin = (user) => {
-//   user.administrator === true;
-// }
-
 const addOne = async (payload) => {
   const response = await db.query(
     `
-    INSERT INTO users (email, passwordHash, administrator)
-    VALUES ($1, $2, $3) RETURNING *
+    INSERT INTO users (email, passwordHash,)
+    VALUES ($1, $2,) RETURNING *
   `,
-    [payload.email, payload.passwordHash, payload.administrator],
+    [payload.email, payload.passwordHash],
   );
   return response.rows[0];
 };
@@ -47,7 +43,7 @@ const findByEmail = async (payload) => {
 const findById = async (id) => {
   const response = await db.query(
     `
-    SELECT id, email, verify_email, Administrator FROM users
+    SELECT id, email, verify_email, is_admin FROM users
     WHERE id = $1
   `,
     [id],

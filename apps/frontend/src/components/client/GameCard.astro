@@ -25,15 +25,15 @@ const { name, price, id } = Astro.props;
 
   addButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const productId = Number(button.dataset.productId);
-      const productName = button.dataset.productName;
-      const productPrice = Number(button.dataset.productPrice);
+      constgameId = Number(button.dataset.productId);
+      constgameName = button.dataset.productName;
+      constgamePrice = Number(button.dataset.productPrice);
 
       if (!isNaN(productId)) {
         cartService.addProductToLocalStorage({
-          productId: productId,
-          name: productName,
-          price: productPrice,
+         gameId:gameId,
+          name:gameName,
+          price:gamePrice,
         });
 
         createNotification({

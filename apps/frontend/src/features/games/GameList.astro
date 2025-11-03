@@ -1,120 +1,183 @@
 ---
 import { BACK_ENDPOINT } from "../../config/endpoints";
 import GameItem from "./GameItem.astro";
+
 const response = await fetch(`${BACK_ENDPOINT}/api/games`);
 const gamesData = await response.json();
 ---
 
-<ul data-games={JSON.stringify(gamesData)} id="games-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border bg-gradient-to-tr 100  border-gray-300 h-full md:w-[70%] lg:w-[50%]">
-  <template id="Game-item-template">  
-    <GameItem 
-      name="Elden ring"
-      quantity="3"
-      id={0}
-      description="Descripcion del juego"
-      url="https://example.com/image.jpg"
-      price="59.99"
-    />
-  </template>
-  {gamesData.map(Game => (
-    <GameItem 
-      name={Game.name} 
-      quantity={Game.quantity} 
-      id={Game.id}
-      description={Game.description}
-      url={Game.url}
-      price={Game.price}
-    />
-  ))}
+<ul 
+ data-games={JSON.stringify(gamesData)} 
+ id="games-list" 
+ class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border bg-gradient-to-tr 100 border-gray-300 h-full md:w-[70%] lg:w-[50%]"
+>
+<template id="Game-item-template"> 
+ <GameItem 
+ name="Elden ring"
+ quantity="3"
+ id={0}
+ description="Descripcion del juego"
+ url="https://example.com/image.jpg"
+ price="59.99"
+ />
+</template>
+
+{gamesData.map(Game => (
+ <GameItem 
+ name={Game.name} 
+ quantity={Game.quantity} 
+ id={Game.id}
+ description={Game.description}
+ url={Game.url}
+ price={Game.price}
+ />
+))}
 </ul>
 
 <script>
-  // @ts-nocheck
-  import gamesModule from "./games.module.js"; 
-  import { games } from "../../pages/admin/games.astro";
-  const gamesList = document.querySelector('#games-list');
-  const GameItemTemplate = document.querySelector('#Game-item-template');
-  games.set(JSON.parse(gamesList.dataset.games));
-  games.listen(games => {    
-    // Reiniciamos el estado de la lista
-    gamesList.innerHTML = '';
-    for (const Game of games) {
-      // Clonamos el componente del li
-      const GameItem = GameItemTemplate.content.cloneNode(true).children[0];
-      // Seleccionamos los inputs a reemplazar
-      const inputName = GameItem.children[0].children[0];
-      const inputQuantity = GameItem.children[0].children[1];
-      const inputDescription = GameItem.children[0].children[2];
-      const inputImage = GameItem.children[0].children[3];
-      // Editamos el li
-      GameItem.id = Game.id;
-      inputName.value = Game.name;
-      inputQuantity.value = Game.phone;
-      inputDescription.value = Game.description;
-      inputImage.src = Game.url;
-      // Adjuntamos el nuevo li a la lista      
-      gamesList.append(GameItem);
-    }
-  });
-  gamesList.addEventListener('click', async e => {
-    const deleteBtn = e.target.closest('.delete-btn');
-    const editBtn = e.target.closest('.edit-btn');
+// @ts-nocheck
+import gamesModule from "./games.module.js"; 
+import { games } from "../../features/games/Games.module"; 
+import cartService from "../../features/cart/components/cart.module"; 
+import { createNotification } from "../notifications/notificiation.js"; 
+
+const gamesList = document.querySelector('#games-list');
+const GameItemTemplate = document.querySelector('#Game-item-template');
+
+// Inicialización del estado
+games.set(JSON.parse(gamesList.dataset.games));
+
+// --------------------------------------------------------------------------------
+games.listen(games => { 
+ // Reiniciamos el estado de la lista
+ gamesList.innerHTML = '';
+ for (const Game of games) {
+ // Clonamos el componente del li
+ const GameItem = GameItemTemplate.content.cloneNode(true).children[0];
+ const inputName = GameItem.children[0].children[0];
+ const inputQuantity = GameItem.children[0].children[1];
+ const inputDescription = GameItem.children[0].children[2];
+ const inputImage = GameItem.children[0].children[3];
+ const inputPrice = GameItem.children[0].children[4];
+ const inputConsole = GameItem.children[0].children[5]; 
+
+ // Editamos el li
+ GameItem.id = Game.id;
+ inputName.value = Game.name;
+ inputQuantity.value = Game.quantity;
+ inputDescription.value = Game.description;
+ inputImage.value = Game.url; 
+ inputPrice.value = Game.price;
+ 
+ // Si inputConsole existe:
+ if (inputConsole) {
+   inputConsole.value = Game.console || ''; 
+ }
+ 
+ gamesList.append(GameItem);
+ }
+});
+
+// --------------------------------------------------------------------------------
+gamesList.addEventListener('click', async e => {
+ // Identificadores de botones
+ const deleteBtn = e.target.closest('.delete-btn');
+ const editBtn = e.target.closest('.edit-btn');
+ const addToCartBtn = e.target.closest('.add-to-cart-btn');
+
+ // Lógica de ELIMINAR
+ if (deleteBtn) {
+ const li = deleteBtn.parentElement.parentElement;
+ if (confirm(`¿Seguro que quieres eliminar el juego con ID ${li.id}?`)) {
+  await gamesModule.removeGame(li.id);
+  createNotification({ title: "Juego Eliminado", description: "El juego ha sido eliminado.", type: "success" });
+ }
+ return;
+ }
+
+ // Lógica de EDITAR/GUARDAR
+ if (editBtn) {
+ const li = editBtn.parentElement.parentElement;
+ const status = li.dataset.status;
+ const GameInputName = li.children[0].children[0];
+ const GameInputQuantity = li.children[0].children[1];
+ const GameInputDescription = li.children[0].children[2];
+ const GameInputImage = li.children[0].children[3];
+ const GameInputPrice = li.children[0].children[4];
+ const GameInputConsole = li.children[0].children[5]; 
+ const GameEditBtn = li.children[1].children[0];
+ 
+ // Bloque de HABILITAR EDICIÓN
+ if (status === 'inputs-deshabilitados') {
+  GameInputName.removeAttribute('readonly');
+  GameInputQuantity.removeAttribute('readonly');
+  GameInputDescription.removeAttribute('readonly');
+  GameInputImage.removeAttribute('readonly');
+  GameInputPrice.removeAttribute('readonly'); 
+  if (GameInputConsole) GameInputConsole.removeAttribute('readonly');
   
-    if (deleteBtn) {
-      // 1. Encuentro el li
-      const li = deleteBtn.parentElement.parentElement;
-      // 2. Actualizo el array en js, usando el metodo filter para devolver todos los Gameos excepto el que quiero eliminar.
-      await gamesModule.removeGame(li.id);
-    }
+  li.dataset.status = 'inputs-habilitados';
+  GameEditBtn.children[0].classList.add('hidden');
+  GameEditBtn.children[1].classList.remove('hidden');
+ } else {
+  // Bloque de GUARDAR EDICIÓN
+  
+  // 1. Re-habilitar readonly
+  GameInputName.setAttribute('readonly', true);
+  GameInputQuantity.setAttribute('readonly', true);
+  GameInputDescription.setAttribute('readonly', true);
+  GameInputImage.setAttribute('readonly', true);
+  GameInputPrice.setAttribute('readonly', true);
+  if (GameInputConsole) GameInputConsole.setAttribute('readonly', true); 
+  
+  li.dataset.status = 'inputs-deshabilitados';
+  GameEditBtn.children[0].classList.remove('hidden');
+  GameEditBtn.children[1].classList.add('hidden');
+  
+  const GameToUpdate = {
+    id: li.id,
+    name: GameInputName.value,
+    price: Number(GameInputPrice.value),
+    quantity: Number(GameInputQuantity.value),
+    description: GameInputDescription.value,
+    url: GameInputImage.value,
+    console: GameInputConsole ? GameInputConsole.value : 'N/A' 
+  }
+  
+  await gamesModule.updateGame(GameToUpdate);
+  createNotification({ title: "Juego Actualizado", description: "Los cambios han sido guardados.", type: "success" });
+ }
+ }
 
-    if (editBtn) {
-      // 1. Encuentro el li
-      const li = editBtn.parentElement.parentElement;
-      // 2. Obtener el status
-      const status = li.dataset.status;
-      // 3. Obtener los inputs
-      const GameInputName = li.children[0].children[0];
-      const GameInputQuantity = li.children[0].children[1];
-      const GameInputDescription = li.children[0].children[2];
-      const GameInputImage = li.children[0].children[3];
-      // 4. Obtener el boton
-      const GameEditBtn = li.children[1].children[0];
-      
-      if (status === 'inputs-deshabilitados') {
-        // 1. Remover el readonly (No se puede editar) de los inputs.
-        GameInputName.removeAttribute('readonly');
-        GameInputQuantity.removeAttribute('readonly');
-        GameInputDescription.removeAttribute('readonly');
-        GameInputImage.removeAttribute('readonly');
-        // 2. Cambiar el status a inputs-habilitados
-        li.dataset.status = 'inputs-habilitados';
-        // 3. Cambiar icono del boton para reflejar el estado
-        GameEditBtn.children[0].classList.add('hidden');
-        GameEditBtn.children[1].classList.remove('hidden');
-        // 4. Cambiar estilos de los inputs para reflejar el estado
-      }
+ if (addToCartBtn) {
+  console.log('Añadiendo al carrito...');
+  const gameId = addToCartBtn.dataset.productId; 
+  const gameName = addToCartBtn.dataset.productName;
+  const gamePrice = addToCartBtn.dataset.productPrice;
+  const parsedGameId = parseInt(gameId);
+  const parsedGamePrice = parseFloat(gamePrice);
 
-      if (status === 'inputs-habilitados') {
-        // 1. Agegar el readonly (No se puede editar) de los inputs.
-        GameInputName.setAttribute('readonly', true);
-        GameInputQuantity.setAttribute('readonly', true);
-        GameInputDescription.setAttribute('readonly', true);
-        GameInputImage.setAttribute('readonly', true);
-        // 2. Cambiar el status a inputs-deshabilitados
-        li.dataset.status = 'inputs-deshabilitados';
-        // 3. Cambiar icono del boton para reflejar el estado
-        GameEditBtn.children[0].classList.remove('hidden');
-        GameEditBtn.children[1].classList.add('hidden');
-        // 4. Actualizar el Game
-        const GameToUpdate = {
-          id: li.id,
-          name: GameInputName.value,
-          quantity: GameInputQuantity.value,
-          description: GameInputDescription.value,
-          url: GameInputImage.value
-        }
-        await gamesModule.updateGame(GameToUpdate);
-      }
-    }
-  });
+  if (!isNaN(parsedGameId) && !isNaN(parsedGamePrice)) {
+   cartService.addGameToLocalStorage({
+    GameId: parsedGameId,
+    name: gameName,
+    price: parsedGamePrice,
+    quantity: 1,
+   });
+   
+   createNotification({
+   title: "Juego añadido",
+   description: `${gameName} se ha agregado a tu carrito.`,
+   type: "success",
+   });
+  } else {
+   createNotification({
+   title: "Error",
+   description: "No se pudieron obtener los datos del juego.",
+   type: "error",
+   });
+  }
+  return;
+ }
+});
 </script>

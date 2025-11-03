@@ -12,7 +12,7 @@ import { authenticateUser } from './src/modules/auth/auth.middlewares.js';
 import authRouter from './src/modules/auth/auth.routes.js';
 import loginRouter from './src/modules/login/login.routes.js';
 import ordersRouter from './src/modules/cart/order/order.routes.js';
-import orderProductsRouter from './src/modules/cart/orderProducts/orderProducts.routes.js';
+import orderGamesRouter from './src/modules/cart/orderGames/orderGames.routes.js';
 import path from 'path';
 // import { handler as ssrHandler } from './dist/server/entry.mjs';
 
@@ -23,12 +23,12 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/games', gamesRouter);
+app.use('/api/paymentMethods', authenticateUser, paymentMethodsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/cart/order', ordersRouter);
+app.use('/api/cart/orderGames', orderGamesRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/paymentMethods', paymentMethodsRouter);
-app.use('/api/cart/order', authenticateUser, ordersRouter);
-app.use('/api/cart/orderProducts', orderProductsRouter);
 app.use('/', express.static(path.join(import.meta.dirname, 'dist', 'client')));
 // app.use(ssrHandler);
 

@@ -1,60 +1,156 @@
 ---
 const { name, quantity, id, description, url, price } = Astro.props;
 import { Icon } from 'astro-icon/components';
+import cartService from '../cart/components/cart.module';
 ---
 
-<li id={id} class="flex gap-4 justify-between items-center" data-status="inputs-deshabilitados">
-  <div class="flex flex-wrap md:flex-nowrap gap-2 flex-grow">
-    <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={name} readonly>
-    <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={quantity} readonly>
-    <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={description} readonly>
-    <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="url" value={url} readonly>
-    <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="url" value={price} readonly>
-  </div>
-  <div class="flex gap-2 items-center">
-    <button class="edit-btn w-8 h-8 flex justify-center items-center text-gray-600 hover:text-indigo-700">
-      <Icon name="mdi:account-box-edit-outline" class="w-6 h-6" is:inline/>
-      <Icon name="mdi:pencil" class="w-6 h-6 hidden" is:inline/>
-    </button>
-    <button class="delete-btn w-8 h-8 flex justify-center items-center text-gray-600 hover:text-red-600">
-      <Icon name="mdi:alpha-x" class="w-6 h-6" is:inline/>
-    </button>
-    <button
-      class="add-to-cart-btn w-full py-2 px-4 text-sm font-medium text-white bg-lime-600 rounded-lg hover:bg-lime-700"
-      data-product-id={id}
-      data-product-name={name}
-      data-product-price={price}
-    >
-      Añadir al carrito
-    </button>
-  </div>
+<li id={id} 
+    class="game-item flex gap-4 justify-between items-center" 
+    data-status="inputs-deshabilitados" 
+    data-item-id={id} 
+>
+ <div class="inputs-container flex flex-wrap md:flex-nowrap gap-2 flex-grow">
+  <input name="name" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={name} readonly>
+  <input name="quantity" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={quantity} readonly>
+  <input name="description" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={description} readonly>
+  <input name="url" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="url" value={url} readonly>
+  <input name="price" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="number" value={price} readonly>
+ </div>
+ <div class="flex gap-2 items-center">
+    
+    
+  <button class="edit-btn w-8 h-8 flex justify-center items-center text-gray-600 hover:text-indigo-700" aria-label="Editar juego">
+   <Icon name="mdi:pencil" class="icon-edit w-6 h-6" is:inline/>
+   <Icon name="mdi:content-save" class="icon-save w-6 h-6 hidden" is:inline/>
+  </button>
+    
+    
+  <button class="delete-btn w-8 h-8 flex justify-center items-center text-gray-600 hover:text-red-600" aria-label="Eliminar juego">
+   <Icon name="mdi:alpha-x" class="w-6 h-6" is:inline/>
+  </button>
+    
+    
+  <button
+   class="add-to-cart-btn w-full py-2 px-4 text-sm font-medium text-white bg-lime-600 rounded-lg hover:bg-lime-700"
+   data-product-id={id}
+   data-product-name={name}
+   data-product-price={price}
+   data-product-quantity={quantity}
+   id={`add-to-cart-${id}`}
+  >
+   Añadir al carrito
+  </button>
+ </div>
 </li>
 
-<script>
-  // @ts-nocheck
-  import cartService from "../../features/cart/components/cart.module.js";
-  // import { createNotification } from "../notifications/notification.js";
-  const addButtons = document.querySelectorAll(".add-to-cart-btn");
+<!-- <script>
+ @ts-nocheck
+ import cartService from "../../features/cart/components/cart.module.js";
+ import { createNotification } from "../notifications/notificiation.js"; 
+ import ky from 'ky'; 
+ const itemId = String(Astro.props.id);
+ const itemElement = document.querySelector(`#game-item-${itemId}`);
+ const deleteButton = itemElement.querySelector('.delete-btn');
+ const editButton = itemElement.querySelector('.edit-btn');
+ const inputsContainer = itemElement.querySelector('.inputs-container');
+ const saveIcon = itemElement.querySelector('.icon-save');
+ const editIcon = itemElement.querySelector('.icon-edit');
+ const BACK_ENDPOINT = import.meta.env.BACK_ENDPOINT || "http://localhost:3000"; 
+ const DELETE_URL = `${BACK_ENDPOINT}/api/games/${itemId}`;
+ const UPDATE_URL = `${BACK_ENDPOINT}/api/games/${itemId}`;
 
-  addButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const productId = Number(button.dataset.productId);
-      const productName = button.dataset.productName;
-      const productPrice = Number(button.dataset.productPrice);
+ // ------------------------------------------------------------------
+ deleteButton.addEventListener('click', async () => {
+  if (!confirm('¿Estás seguro de que quieres eliminar este juego?')) {
+   return;
+  }
 
-      if (!isNaN(productId)) {
-        cartService.addProductToLocalStorage({
-          productId: productId,
-          name: productName,
-          price: productPrice,
-        });
+  try {
+   await ky.delete(DELETE_URL);
+   itemElement.remove();
 
-        createNotification({
-          title: "Juego añadido",
-          description: "El juego se ha agregado a tu carrito.",
-          type: "success",
-        });
-      }
+   createNotification({
+    title: "Juego Eliminado",
+    description: `El juego con ID ${itemId} ha sido eliminado.`,
+    type: "success",
+   });
+  } catch (error) {
+   console.error('Error al eliminar el juego:', error);
+   createNotification({
+    title: "Error",
+    description: "No se pudo eliminar el juego del servidor.",
+    type: "error",
+   });
+  }
+ });
+  // ------------------------------------------------------------------
+ editButton.addEventListener('click', async () => {
+  const isEditing = itemElement.dataset.status === 'edit';
+
+  if (isEditing) {
+   const updatedData = {};
+   const inputs = inputsContainer.querySelectorAll('input');
+
+   inputs.forEach(input => {
+    updatedData[input.name] = input.value;
+   });
+
+   try {
+    await ky.put(UPDATE_URL, { json: updatedData });
+    inputs.forEach(input => {
+     input.setAttribute('readonly', 'true');
     });
+    itemElement.dataset.status = 'read';
+    editIcon.classList.remove('hidden');
+    saveIcon.classList.add('hidden');
+
+    createNotification({
+     title: "Juego Actualizado",
+     description: `El juego ${updatedData.name} ha sido guardado.`,
+     type: "success",
+    });
+   } catch (error) {
+    console.error('Error al actualizar el juego:', error);
+    createNotification({
+     title: "Error",
+     description: "No se pudo actualizar el juego.",
+     type: "error",
+    });
+   }
+
+  } else {
+   const inputs = inputsContainer.querySelectorAll('input');
+   inputs.forEach(input => {
+    input.removeAttribute('readonly');
+   });
+   itemElement.dataset.status = 'edit';
+   editIcon.classList.add('hidden');
+   saveIcon.classList.remove('hidden');
+  }
+ });
+ ------------------------------------------------------------------
+ const addToCartButton = itemElement.querySelector(`#add-to-cart-${itemId}`);
+
+ if (addToCartButton) {
+  addToCartButton.addEventListener("click", () => {
+   const productId = Number(addToCartButton.dataset.productId);
+   const productName = addToCartButton.dataset.productName;
+   const productPrice = Number(addToCartButton.dataset.productPrice);
+
+   if (!isNaN(productId)) {
+    cartService.addProductToLocalStorage({
+     productId: productId,
+     name: productName,
+     price: productPrice,
+    });
+
+    createNotification({
+     title: "Juego añadido",
+     description: "El juego se ha agregado a tu carrito.",
+     type: "success",
+    });
+   }
   });
-</script>
+ }
+
+</script> -->

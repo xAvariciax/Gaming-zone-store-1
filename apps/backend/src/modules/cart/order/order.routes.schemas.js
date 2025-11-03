@@ -21,7 +21,6 @@ const userIdSchema = z
 
 export const createOrderRouteSchema = {
   body: z.object({
-    payment_method_id: z.number().int().positive('El ID del método de pago es requerido.'),
     payment_reference: z
       .string()
       .regex(PAYMENT_REFERENCE_REGEX, 'La referencia debe tener 4 caracteres.'),

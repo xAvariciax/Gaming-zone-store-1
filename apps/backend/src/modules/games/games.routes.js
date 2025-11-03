@@ -22,20 +22,39 @@ gamesRouter.post('/', async (req, res) => {
   res.json(newgames);
 });
 
-gamesRouter.delete('/', async (req, res) => {
-  const params = deletegamesRouteSchema.params.parse(req.params);
-  console.log('PARAMS', params);
-  const gamesDeleted = await gamesRepository.deleteOneById(params.id);
-  console.log('games ELIMINADO', gamesDeleted);
+gamesRouter.delete('/:id', async (req, res, next) => {
+  try {
+    const params = deletegamesRouteSchema.params.parse(req.params);
+    console.log('PARAMS', params);
 
-  res.json(gamesDeleted);
+    const idToDelete = Number(params.id);
+    // 2. La función ahora recibe solo el ID, no el objeto { gameId: id }
+    const gamesDeleted = await gamesRepository.deleteOneById(idToDelete);
+
+    console.log('games ELIMINADO', gamesDeleted);
+    res.json(gamesDeleted);
+  } catch (error) {
+    next(error);
+  }
 });
 
-gamesRouter.put('/', async (req, res) => {
-  const body = updategamesRouteSchema.body.parse(req.body);
-  const params = updategamesRouteSchema.params.parse(req.params);
-  const gamesUpdated = await gamesRepository.updateOneById(params.id, body);
-  res.json(gamesUpdated);
+// En games.routes.js, en la ruta PUT /:id
+
+gamesRouter.put('/:id', async (req, res, next) => {
+  try {
+    // 1. Validar el cuerpo (el payload)
+    const body = updategamesRouteSchema.body.parse(req.body);
+
+    const gameId = Number(req.params.id);
+    // 3. Llamar al repositorio con el ID como número y el payload
+    const gamesUpdated = await gamesRepository.updateOneById(gameId, {
+      ...body,
+    });
+
+    res.json(gamesUpdated);
+  } catch (error) {
+    next(error);
+  }
 });
 
 export default gamesRouter;

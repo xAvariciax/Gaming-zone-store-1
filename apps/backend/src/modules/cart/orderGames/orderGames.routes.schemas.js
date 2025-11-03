@@ -1,18 +1,18 @@
 import { z } from 'zod';
-import { orderProductSchema } from './orderProducts.schemas.js';
+import { orderGameSchema } from './orderGame.schemas.js';
 
 const orderIdParamSchema = z
   .string()
   .transform((val) => Number(val))
   .refine((val) => !isNaN(val), 'El ID de la orden tiene que ser un número.');
 
-const productIdParamSchema = z
+const gameIdParamSchema = z
   .string()
   .transform((val) => Number(val))
-  .refine((val) => !isNaN(val), 'El ID del producto tiene que ser un número.');
+  .refine((val) => !isNaN(val), 'El ID del game tiene que ser un número.');
 
-export const addProductToOrderSchema = {
-  body: orderProductSchema.omit({
+export const addGameToOrderSchema = {
+  body: orderGameSchema.omit({
     id: true,
     orderId: true,
   }),
@@ -21,19 +21,19 @@ export const addProductToOrderSchema = {
   }),
 };
 
-export const updateProductQuantitySchema = {
+export const updateGameQuantitySchema = {
   body: z.object({
-    newQuantity: orderProductSchema.shape.quantity,
+    newQuantity: orderGameSchema.shape.quantity,
   }),
   params: z.object({
     orderId: orderIdParamSchema,
-    productId: productIdParamSchema,
+    gameId: gameIdParamSchema,
   }),
 };
 
-export const deleteProductFromOrderSchema = {
+export const deleteGameFromOrderSchema = {
   params: z.object({
     orderId: orderIdParamSchema,
-    productId: productIdParamSchema,
+    gameId: gameIdParamSchema,
   }),
 };

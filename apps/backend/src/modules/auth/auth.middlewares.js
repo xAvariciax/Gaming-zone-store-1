@@ -16,7 +16,6 @@ export const authenticateUser = async (req, res, next) => {
   if (!user) {
     throw new ErrorWithStatus(401, 'No estas autorizado para esta operacion');
   }
-
   // 3. Implementar el usuario en cada requerimiento de la ruta que use el middleware
   req.user = user;
   next();

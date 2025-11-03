@@ -1,12 +1,12 @@
 ---
 import { Icon } from "astro-icon/components";
 const { game, quantity, } = Astro.props;
- // **Nueva Verificación Defensiva**
-if (!game) {
-  // Si 'game' es undefined o null, deja de renderizar para evitar el fallo.
-  console.error("El componente CartItem recibió una propiedad 'game' indefinida.");
-  return null; // Retorna nulo para no renderizar el resto del componente
-}
+  // // **Nueva Verificación Defensiva**
+  // if (!game) {
+  //  // Si 'game' es undefined o null, deja de renderizar para evitar el fallo.
+  //   console.error("El componente CartItem recibió una propiedad 'game' indefinida.");
+  //   return null; // Retorna nulo para no renderizar el resto del componente
+  // }
 ---
 
 
@@ -46,7 +46,7 @@ if (!game) {
   <div class="flex-shrink-0">
     <button
       class="remove-item-btn p-1 text-gray-600 dark:text-gray-300 hover:text-red-600 transition-colors"
-      aria-label="Eliminar producto"
+      aria-label="Eliminar juego"
     >
       <Icon name="mdi:trash-can-outline" class="w-6 h-6" />
     </button>
