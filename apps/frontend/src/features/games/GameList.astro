@@ -159,7 +159,7 @@ gamesList.addEventListener('click', async e => {
 
   if (!isNaN(parsedGameId) && !isNaN(parsedGamePrice)) {
    cartService.addGameToLocalStorage({
-    GameId: parsedGameId,
+    gameId: parsedGameId,
     name: gameName,
     price: parsedGamePrice,
     quantity: 1,

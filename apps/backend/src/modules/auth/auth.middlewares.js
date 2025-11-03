@@ -11,7 +11,7 @@ export const authenticateUser = async (req, res, next) => {
   }
 
   // 2. Descodificar el token
-  const decodedToken = jwt.verify(accessToken, process.env.REFRESH_TOKEN_SECRET);
+  const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
   const user = await usersRepository.findByEmail({ email: decodedToken.email });
   if (!user) {
     throw new ErrorWithStatus(401, 'No estas autorizado para esta operacion');

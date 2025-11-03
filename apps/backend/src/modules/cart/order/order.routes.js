@@ -1,6 +1,6 @@
 import express from 'express';
 import orderRepository from './order.repository.js';
-import { authenticateUser, authorizeAdmin } from '../../auth/auth.middlewares.js';
+import { authenticateUser } from '../../auth/auth.middlewares.js';
 import {
   createOrderRouteSchema,
   deleteOrderRouteSchema,
@@ -22,7 +22,7 @@ ordersRouter.get('/user/:userId', async (req, res) => {
 });
 
 // GET /api/orders/pending - Ruta para que el "admin" vea los pagos por revisar
-ordersRouter.get('/pending', authenticateUser, authorizeAdmin, async (req, res) => {
+ordersRouter.get('/pending', authenticateUser, async (req, res) => {
   if (!req.user || req.user?.is_admin) {
     return res.status(403).json({ error: 'Acceso no autorizado' });
   }

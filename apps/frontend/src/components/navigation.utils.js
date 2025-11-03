@@ -33,6 +33,14 @@ export const getLinks = (pathname) => {
         location.replace('/admin');
       }
     });
+    links.push({
+      text: 'orders',
+      path: '/client/my-orders',
+      handler: async () => {
+        await AuthModule.getLoggedUser();
+        location.replace('/client/my-orders');
+      }
+    });
     links.push({ 
       text: 'carrito',
       path: '/carrito', 

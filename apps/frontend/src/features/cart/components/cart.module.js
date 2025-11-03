@@ -73,10 +73,16 @@ const updateGameQuantityInLocalStorage = ({ gameId, newQuantity }) => {
 };
 
 // Eliminar un Game del carrito
+// Eliminar un Game del carrito
+// Lógica de eliminación
 const removeGameFromLocalStorage = ({ gameId }) => {
-  const currentCart = getCartFromLocalStorage();
-  const updatedCart = currentCart.filter(item => item.gameId !== gameId);
-  saveCartToLocalStorage(updatedCart);
+    const numericGameId = Number(gameId); 
+    const currentCart = getCartFromLocalStorage();
+    
+    // Filtramos para MANTENER solo los elementos cuyo ID NO COINCIDE con el ID a eliminar.
+    const updatedCart = currentCart.filter(item => item.gameId !== numericGameId); // <-- Lógica Correcta
+    
+    saveCartToLocalStorage(updatedCart);
 };
 // ------------------------------------------------------------------------------------------
 
