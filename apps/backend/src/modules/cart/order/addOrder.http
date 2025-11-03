@@ -3,5 +3,6 @@ Content-Type: application/json
 {
   "payment_reference": "5678",
   "monto": 200,
-  "user_id": 1
+  "user_id": 1,
+  "payment_method_id": 2
 }

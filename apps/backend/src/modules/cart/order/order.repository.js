@@ -9,10 +9,10 @@ const getAll = async () => {
 const addOne = async (payload) => {
   const response = await db.query(
     `
-    INSERT INTO user_order (date, status, user_id, payment_reference, monto)
-    VALUES (NOW(), 'preparacion', $1, $2, $3) RETURNING *
+    INSERT INTO user_order (date, status, user_id, payment_reference, payment_method_id, monto)
+    VALUES (NOW(), 'preparacion', $1, $2, $3, $4) RETURNING *
   `,
-    [payload.user_id, payload.payment_reference, payload.monto],
+    [payload.user_id, payload.payment_reference, payload.payment_method_id, payload.monto],
   );
   return response.rows[0];
 };
@@ -53,6 +53,7 @@ const getByPaymentStatus = async (status) => {
       uo.id,
       uo.date,
       uo.payment_reference,
+      uo.payment_method_id,
       uo.monto,
       pm.bank AS bank_name,
       u.email AS user_email
