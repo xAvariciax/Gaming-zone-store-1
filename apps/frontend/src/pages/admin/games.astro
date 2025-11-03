@@ -24,7 +24,11 @@ import Layout from "../../layouts/Layout.astro";
 
   <CreateGameForm />
 </Layout>
-
+<style>
+  .add-to-cart-btn {
+    display: hidden;
+  }
+</style>
 <script>
   // Obtén las referencias a los elementos del DOM
   const abrirModalBtn = document.querySelector("#abrir-modal");

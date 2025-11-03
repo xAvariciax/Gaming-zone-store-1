@@ -33,8 +33,9 @@ export const createOrderWithGames = async (payload) => {
           payment_reference: payload.payment_reference,
           monto: payload.monto,
           user_id: payload.user_id,
+          payment_method_id: payload.payment_method_id,
         },
-          // credentials: "include",
+         credentials: "include",
       })
       .json();
 
@@ -47,7 +48,7 @@ export const createOrderWithGames = async (payload) => {
           gameId: item.gameId,
           quantity: item.quantity,
         },
-        //  credentials: "include",
+        credentials: "include",
       });
     }
 

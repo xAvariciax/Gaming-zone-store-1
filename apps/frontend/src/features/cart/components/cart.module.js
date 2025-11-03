@@ -40,21 +40,26 @@ const saveCartToLocalStorage = (cartData) => {
   cart.set(cartData);
 };
 
-// Agregar un Gameo al carrito de localStorage
+// Agregar un Game al carrito de localStorage
 const addGameToLocalStorage = ({ gameId, quantity = 1, name, price }) => {
-  const currentCart = getCartFromLocalStorage();
-  const existingGameIndex = currentCart.findIndex(item => item.gameId === gameId);
+    const numericGameId = Number(gameId); 
 
-  if (existingGameIndex > -1) {
-    currentCart[existingGameIndex].quantity += quantity;
-  } else {
-    currentCart.push({ gameId, quantity, name, price });
-  }
+    const currentCart = getCartFromLocalStorage();
+    
+    // Usamos el ID numérico para la comparación
+    const existingGameIndex = currentCart.findIndex(item => item.gameId === numericGameId);
 
-  saveCartToLocalStorage(currentCart);
+    if (existingGameIndex > -1) {
+        currentCart[existingGameIndex].quantity += quantity;
+    } else {
+        // Almacenamos el ID como número.
+        currentCart.push({ gameId: numericGameId, quantity, name, price }); 
+    }
+
+    saveCartToLocalStorage(currentCart);
 };
 
-// Actualizar la cantidad de un Gameo
+// Actualizar la cantidad de un Game
 const updateGameQuantityInLocalStorage = ({ gameId, newQuantity }) => {
   if (newQuantity <= 0) {
     removeGameFromLocalStorage({ gameId });
@@ -67,15 +72,12 @@ const updateGameQuantityInLocalStorage = ({ gameId, newQuantity }) => {
   saveCartToLocalStorage(updatedCart);
 };
 
-// Eliminar un Gameo del carrito
+// Eliminar un Game del carrito
 const removeGameFromLocalStorage = ({ gameId }) => {
   const currentCart = getCartFromLocalStorage();
   const updatedCart = currentCart.filter(item => item.gameId !== gameId);
   saveCartToLocalStorage(updatedCart);
 };
-
-// ------------------------------------------------------------------------------------------
-// Parte 2: Funciones para manejar el carrito cuando el usuario está logueado
 // ------------------------------------------------------------------------------------------
 
 // Obtener el carrito de la base de datos.

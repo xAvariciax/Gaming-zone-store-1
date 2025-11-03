@@ -2,6 +2,7 @@
 import { BACK_ENDPOINT } from "../../config/endpoints";
 import Layout from "../../layouts/Layout.astro"; 
 import GameItem from "../../features/games/GameItem.astro";
+import GameList from "../../features/games/GameList.astro";
 
 const response = await fetch(`${BACK_ENDPOINT}/api/games`);
 const gamesData = await response.json();
@@ -10,27 +11,28 @@ const gamesData = await response.json();
 
  <main class="playstation">
  <ul data-games={JSON.stringify(gamesData)} id="games-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border bg-gradient-to-tr 100 border-gray-300 h-full md:w-[70%] lg:w-[50%]">
-<template id="Game-item-template"> 
-<GameItem 
-name="Elden ring"
-quantity="3"
-id={0}
-description="Descripcion del juego"
-url="https://example.com/image.jpg"
- price="59.99"
-    />
-   </template>
-   {gamesData.map(Game => (
-    <GameItem 
-    name={Game.name} 
-    quantity={Game.quantity} 
-    id={Game.id}
-    description={Game.description}
-    url={Game.url}
-    price={Game.price}
-    />
-   ))}
+<template id="Game-item-template">
+  <GameItem 
+  name="Elden ring"
+  quantity="3"
+  id={0}
+  description="Descripcion del juego"
+  url="https://example.com/image.jpg"
+  price="59.99"
+  />
+</template>
+{gamesData.map(Game => (
+  <GameItem 
+  name={Game.name} 
+  quantity={Game.quantity} 
+  id={Game.id}
+  description={Game.description}
+  url={Game.url}
+  price={Game.price}
+  />
+))}
     </ul>
+    <GameList />
   </main>
 
 </Layout>

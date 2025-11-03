@@ -20,3 +20,12 @@ export const authenticateUser = async (req, res, next) => {
   req.user = user;
   next();
 };
+
+export const authorizeAdmin = (req, res, next) => {
+  if (req.user && req.user.is_admin === true) {
+    next(); // El usuario es administrador, permitir acceso
+  } else {
+    // Si no es admin, negamos el acceso (403 Forbidden)
+    throw new ErrorWithStatus(403, 'Acceso denegado. Se requieren permisos de administrador.');
+  }
+};
