@@ -12,7 +12,7 @@ const CART_STORAGE_KEY = 'localCart';
 /**
  * @typedef CartItem
  * @type {object}
- * @property {number} GameId - El ID del juego
+ * @property {number} gameId - El ID del juego
  * @property {number} quantity - La cantidad del Gameo en el carrito.
  * @property {string} name - El nombre del juego 
  * @property {number} price - El precio del juego 
@@ -41,36 +41,36 @@ const saveCartToLocalStorage = (cartData) => {
 };
 
 // Agregar un Gameo al carrito de localStorage
-const addGameToLocalStorage = ({ GameId, quantity = 1, name, price }) => {
+const addGameToLocalStorage = ({ gameId, quantity = 1, name, price }) => {
   const currentCart = getCartFromLocalStorage();
-  const existingGameIndex = currentCart.findIndex(item => item.GameId === GameId);
+  const existingGameIndex = currentCart.findIndex(item => item.gameId === gameId);
 
   if (existingGameIndex > -1) {
     currentCart[existingGameIndex].quantity += quantity;
   } else {
-    currentCart.push({ GameId, quantity, name, price });
+    currentCart.push({ gameId, quantity, name, price });
   }
 
   saveCartToLocalStorage(currentCart);
 };
 
 // Actualizar la cantidad de un Gameo
-const updateGameQuantityInLocalStorage = ({ GameId, newQuantity }) => {
+const updateGameQuantityInLocalStorage = ({ gameId, newQuantity }) => {
   if (newQuantity <= 0) {
-    removeGameFromLocalStorage({ GameId });
+    removeGameFromLocalStorage({ gameId });
     return;
   }
   const currentCart = getCartFromLocalStorage();
   const updatedCart = currentCart.map(item =>
-    item.GameId === GameId ? { ...item, quantity: newQuantity } : item
+    item.gameId === gameId ? { ...item, quantity: newQuantity } : item
   );
   saveCartToLocalStorage(updatedCart);
 };
 
 // Eliminar un Gameo del carrito
-const removeGameFromLocalStorage = ({ GameId }) => {
+const removeGameFromLocalStorage = ({ gameId }) => {
   const currentCart = getCartFromLocalStorage();
-  const updatedCart = currentCart.filter(item => item.GameId !== GameId);
+  const updatedCart = currentCart.filter(item => item.gameId !== gameId);
   saveCartToLocalStorage(updatedCart);
 };
 
@@ -117,7 +117,7 @@ const syncCartWithDatabase = async (userId) => {
     // 2. Agregar Gameo del carrito local a la nueva orden en la DB
     for (const item of localCart) {
       await ky.post(`${BASE_URL}/${orderId}`, {
-        json: { GameId: item.GameId, quantity: item.quantity },
+        json: { gameId: item.gameId, quantity: item.quantity },
         credentials: 'include'
       });
     }
