@@ -21,7 +21,7 @@ export const authenticateUser = async (req, res, next) => {
   next();
 };
 
-export const authorizeAdmin = (req, res, next) => {
+export const authorizeAdmin = (req, res, next) => { 
   if (req.user && req.user.is_admin === true) {
     next(); // El usuario es administrador, permitir acceso
   } else {

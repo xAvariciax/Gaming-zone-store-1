@@ -7,10 +7,18 @@ import PaymentMethodItem from "./PaymentMethodItem.astro";
   class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border border-gray-300 h-full md:w-[70%] lg:w-[50%]"
 >
   <template id="payment-method-item-template">
-    <PaymentMethodItem bank="Banesco" phone="04166141129" cedula="31742897" id={0} />
+    <PaymentMethodItem bank="Banesco" phone="04121881310" cedula="28028483" id={0} />
   </template>
 </ul>
-
+<style>
+  #payment-methods-list {
+    max-height: 60vh; 
+    overflow-y: auto; 
+    padding-right: 15px; 
+    border: 1px solid #e5e7eb; 
+    border-radius: 8px;
+  }
+</style>
 <script>
   // @ts-nocheck
   import ky from "ky";

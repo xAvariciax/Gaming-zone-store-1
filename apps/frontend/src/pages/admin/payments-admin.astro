@@ -15,7 +15,15 @@ import Layout from "../../layouts/Layout.astro";
     </div>
   </main>
 </Layout>
-
+<style>
+  #pending-orders-container {
+    max-height: 80vh; 
+    overflow-y: auto; 
+    padding-right: 15px; 
+    border: 1px solid #e5e7eb; 
+    border-radius: 8px;
+  }
+</style>
 <script>
   // @ts-nocheck
   import ordersModule, {
@@ -94,7 +102,7 @@ import Layout from "../../layouts/Layout.astro";
     const orderId = parseInt(orderCard.dataset.orderId);
 
     if (target.classList.contains("approve-btn")) {
-      // Deshabilitamos los botones para evitar doble clic
+      // Deshabilitamos los botones para evitar doble click
       orderCard
         .querySelectorAll("button")
         .forEach((btn) => (btn.disabled = true));

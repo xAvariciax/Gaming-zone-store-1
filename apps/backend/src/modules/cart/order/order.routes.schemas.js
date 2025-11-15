@@ -26,6 +26,7 @@ export const createOrderRouteSchema = {
       .regex(PAYMENT_REFERENCE_REGEX, 'La referencia debe tener 4 caracteres.'),
     monto: z.number().positive('El monto debe ser un número positivo.'),
     user_id: z.number().int().positive('El ID del usuario es requerido.'),
+    payment_method_id: z.number(),
   }),
 };
 

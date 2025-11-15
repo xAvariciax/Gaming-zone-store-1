@@ -3,14 +3,24 @@ import Layout from "../../layouts/Layout.astro";
 ---
 
 <Layout title="Mis Pedidos">
-  <main class="container mx-auto p-4 md:p-8">
-    <h1 class="text-3xl font-bold text-center mb-8">Historial de Pedidos</h1>
+ <main class="container mx-auto p-4 md:p-8 overflow-auto">
+  <h1 class="text-3xl font-bold text-center mb-8">Historial de Pedidos</h1>
 
     <div id="orders-container" class="space-y-4 max-w-4xl mx-auto">
-      <p id="loading-message">Cargando tus pedidos...</p>
-    </div>
-  </main>
+   <p id="loading-message">Cargando tus pedidos...</p>
+        </div>
+ </main>
 </Layout>
+
+<style>
+  #orders-container {
+    max-height: 60vh; 
+    overflow-y: auto; 
+    padding-right: 15px; 
+    border: 1px solid #e5e7eb; 
+    border-radius: 8px;
+  }
+</style>
 
 <script>
   // @ts-nocheck

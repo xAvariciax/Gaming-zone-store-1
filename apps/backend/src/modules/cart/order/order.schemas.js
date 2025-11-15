@@ -9,8 +9,5 @@ export const orderSchema = z.object({
   payment_status: paymentStatusEnum.optional().default('pendiente'),
   payment_reference: z.string().optional(),
   monto: z.number().int().positive('El monto debe ser un número entero positivo.'),
-  payment_method_id: z
-    .number()
-    .int()
-    .positive('El ID del método de pago debe ser un número entero positivo.'),
+  payment_method_id: z.number(),
 });

@@ -49,19 +49,20 @@ const updateOneById = async (id, payload) => {
 const getByPaymentStatus = async (status) => {
   const response = await db.query(
     `
-    SELECT
-      uo.id,
-      uo.date,
-      uo.payment_reference,
-      uo.payment_method_id,
-      uo.monto,
-      pm.bank AS bank_name,
-      u.email AS user_email
-    FROM user_order uo
-    JOIN payment_method pm ON uo.payment_method_id = pm.id
-    JOIN users u ON uo.user_id = u.id
-    WHERE uo.payment_status = $1
-    ORDER BY uo.date DESC
+     SELECT
+      user_order.id,
+      user_order.date,
+      user_order.payment_reference,
+      user_order.payment_method_id,
+      user_order.payment_status,
+      user_order.monto,
+      payment_method.bank AS bank_name,
+      users.email AS user_email
+    FROM user_order
+    JOIN payment_method ON user_order.payment_method_id = payment_method.id
+    JOIN users ON user_order.user_id = users.id
+    WHERE user_order.payment_status = $1
+    ORDER BY user_order.date DESC
   `,
     [status],
   );
